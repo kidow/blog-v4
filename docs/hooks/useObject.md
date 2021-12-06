@@ -62,6 +62,8 @@ function useObject<T>(
 ## Usage
 
 ```tsx
+import { useObject } from '../path'
+
 interface State {
   isLoading: boolean
   email: string
