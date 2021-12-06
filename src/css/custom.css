@@ -29,3 +29,14 @@
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
+
+button {
+  border: none;
+  cursor: pointer;
+}
+
+@layer components {
+  .arrange {
+    @apply inline-flex flex-wrap gap-2 items-start;
+  }
+}
