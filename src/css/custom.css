@@ -39,4 +39,7 @@ button {
   .arrange {
     @apply inline-flex flex-wrap gap-2 items-start;
   }
+  .required {
+    @apply text-red-500;
+  }
 }

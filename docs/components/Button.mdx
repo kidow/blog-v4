@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 ```tsx title="components/Button/index.tsx"
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 import classnames from 'classnames'
 
 interface Props
@@ -9,7 +9,7 @@ interface Props
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  loading?: boolean
+  isLoading?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   theme?:
     | 'light'
@@ -22,7 +22,7 @@ interface Props
 }
 
 const Button: FunctionComponent<Props> = ({
-  loading,
+  isLoading,
   size,
   theme,
   disabled,
@@ -35,8 +35,8 @@ const Button: FunctionComponent<Props> = ({
       className={classnames(
         'border leading-6 font-medium transition ease-in-out duration-150 hover:opacity-70 active:opacity-90',
         {
-          'cursor-not-allowed': loading || disabled,
-          'inline-flex items-center justify-center': loading,
+          'cursor-not-allowed opacity-70': isLoading || disabled,
+          'inline-flex items-center justify-center': isLoading,
           'text-xs py-px px-2 rounded': size === 'xs',
           'text-sm py-1 px-3': size === 'sm',
           'text-base py-2 px-4': size === 'md',
@@ -60,7 +60,7 @@ const Button: FunctionComponent<Props> = ({
 ```
 
 export const Button = ({
-  loading,
+  isLoading,
   size = 'md',
   theme = 'dark',
   children,
@@ -73,8 +73,8 @@ export const Button = ({
       class={classnames(
         'border leading-6 font-medium transition ease-in-out duration-150 hover:opacity-70 active:opacity-90',
         {
-          'cursor-not-allowed': loading || disabled,
-          'inline-flex items-center justify-center': loading,
+          'cursor-not-allowed opacity-70': isLoading || disabled,
+          'inline-flex items-center justify-center': isLoading,
           'text-xs py-px px-2 rounded': size === 'xs',
           'text-sm py-1 px-3': size === 'sm',
           'text-base py-2 px-4': size === 'md',
@@ -91,7 +91,7 @@ export const Button = ({
         }
       )}
     >
-      {loading && (
+      {isLoading && (
         <svg
           className={classnames('animate-spin -ml-1  text-white', {
             'h-5 w-5 mr-3': size === 'xl',
@@ -123,10 +123,18 @@ export const Button = ({
   )
 }
 
-## Theme
+## Props
+
+| Name      | Type                                                            | Default |
+| --------- | --------------------------------------------------------------- | ------- |
+| size      | _xs_ _sm_ _md_ _lg_ _xl_                                        | md      |
+| isLoading | _boolean_                                                       | false   |
+| theme     | _dark_ _light_ _primary_ _secondary_ _success_ _danger_ _ghost_ | dark    |
+
+### Theme
 
 <div class="arrange">
-  <Button>dark (default)</Button>
+  <Button>dark</Button>
   <Button theme="light">light</Button>
   <Button theme="primary">primary</Button>
   <Button theme="secondary">secondary</Button>
@@ -135,34 +143,34 @@ export const Button = ({
   <Button theme="ghost">ghost</Button>
 </div>
 
-## Size
+### Size
 
 <div class="arrange">
   <Button size="xl">xl</Button>
   <Button size="lg">lg</Button>
-  <Button>md (default)</Button>
+  <Button>md</Button>
   <Button size="sm">sm</Button>
   <Button size="xs">xs</Button>
 </div>
 
-## Loading
+### Loading
 
 <div class="arrange">
-  <Button loading size="xl">
+  <Button isLoading size="xl">
     Loading
   </Button>
-  <Button loading size="lg">
+  <Button isLoading size="lg">
     Loading
   </Button>
-  <Button loading>Loading</Button>
-  <Button loading size="sm">
+  <Button isLoading>Loading</Button>
+  <Button isLoading size="sm">
     Loading
   </Button>
-  <Button loading size="xs">
+  <Button isLoading size="xs">
     Loading
   </Button>
 </div>
 
-## Disabled
+### Disabled
 
 <Button disabled>disabled</Button>

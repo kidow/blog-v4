@@ -1,7 +1,5 @@
-import classnames from 'classnames'
-
 ```tsx title="components/Portal/index.tsx"
-import { FunctionComponent } from 'react'
+import type { FunctionComponent } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface Props {
@@ -20,7 +18,13 @@ const Portal: FunctionComponent<Props> = ({ children, elementId }) => {
 export default Portal
 ```
 
-# Usage
+## Props
+
+| Name                                      | Type     | Default |
+| ----------------------------------------- | -------- | ------- |
+| elementId<span class="required">\*</span> | _string_ |         |
+
+## Usage
 
 ```tsx
 const Page = () => {
@@ -36,7 +40,7 @@ const Page = () => {
 
 Add a new element under the root element.
 
-## Next.js
+### Next.js
 
 ```tsx title="pages/_document.tsx"
 import Document, {
@@ -87,9 +91,9 @@ export default class MyDocument extends Document {
         <body className="text-gray-700">
           <Main />
           <NextScript />
-          <----------------->
+          // highlight-start
           <div id="portal" />
-          <----------------->
+          // highlight-end
         </body>
       </Html>
     )
@@ -97,7 +101,7 @@ export default class MyDocument extends Document {
 }
 ```
 
-## React
+### React
 
 ```html title="public/index.html"
 <!DOCTYPE html>
@@ -117,9 +121,9 @@ export default class MyDocument extends Document {
   </head>
   <body>
     <div id="root"></div>
-    <--------------------->
+    // highlight-start
     <div id="portal"></div>
-    <--------------------->
+    // highlight-end
   </body>
 </html>
 ```

@@ -1,0 +1,106 @@
+import classnames from 'classnames'
+
+```tsx title="components/Modal/index.tsx"
+import type { FunctionComponent } from 'react'
+
+type TMaxWidth =
+  | 'max-w-screen-2xl'
+  | 'max-w-screen-xl'
+  | 'max-w-screen-lg'
+  | 'max-w-screen-md'
+  | 'max-w-screen-sm'
+  | 'max-w-full'
+  | 'max-w-7xl'
+  | 'max-w-6xl'
+  | 'max-w-5xl'
+  | 'max-w-4xl'
+  | 'max-w-3xl'
+  | 'max-w-2xl'
+  | 'max-w-xl'
+  | 'max-w-lg'
+  | 'max-w-md'
+  | 'max-w-sm'
+  | 'max-w-xs'
+
+interface IModal {
+  isOpen: boolean
+  onClose: () => void
+  maxWidth: TMaxWidth
+}
+
+export interface Props extends IModal {}
+interface State {}
+
+const Modal: FunctionComponent<Props> = ({
+  isOpen,
+  onClose,
+  children,
+  maxWidth
+}) => {
+  if (!isOpen) return null
+  return (
+    <div
+      className="fixed z-10 inset-0 overflow-y-auto"
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div
+          className="fixed inset-0 bg-black opacity-30 transition-opacity"
+          aria-hidden="true"
+          onClick={onClose}
+        ></div>
+        <span
+          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+        >
+          &#8203;
+        </span>
+        <div
+          className={`inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:${maxWidth} sm:w-full`}
+        >
+          <div className="bg-black px-4 py-5 sm:p-6">{children}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+Modal.defaultProps = {
+  maxWidth: 'max-w-lg'
+}
+
+export default Modal
+```
+
+## Props
+
+| Name                                    | Type                                                                                                                                                                                                                                   | Default  |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| isOpen<span class="required">\*</span>  | _boolean_                                                                                                                                                                                                                              | false    |
+| onClose<span class="required">\*</span> | _function_                                                                                                                                                                                                                             |          |
+| maxWidth                                | _max-w-xs_ _max-w-sm_ _max-w-md_ _max-w-lg_ _max-w-xl_ _max-w-2xl_ _max-w-3xl_ _max-w-4xl_ _max-w-5xl_ _max-w-6xl_ _max-w-7xl_ _max-w-full_ _max-w-screen-sm_ _max-w-screen-md_ _max-w-screen-lg_ _max-w-screen-xl_ _max-w-screen-2xl_ | max-w-lg |
+
+## Usage
+
+```tsx
+import React from 'react'
+import { useObject } from 'hooks'
+import { Modal } from 'components'
+
+interface State {
+  isOpen: boolean
+}
+
+const Page = () => {
+  const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
+  return (
+    <div>
+      <Modal isOpen={isOpen} onClose={() => setState({ isOpen: false })}>
+        <div>Modal!!</div>
+      </Modal>
+    </div>
+  )
+}
+```
