@@ -1,0 +1,125 @@
+import classnames from 'classnames'
+
+```tsx title="components/Portal/index.tsx"
+import { FunctionComponent } from 'react'
+import { createPortal } from 'react-dom'
+
+export interface Props {
+  elementId: string
+}
+interface State {}
+
+const Portal: FunctionComponent<Props> = ({ children, elementId }) => {
+  const rootElement = useMemo(
+    () => document.getElementById(elementId),
+    [elementId]
+  )
+  return createPortal(children, rootElement as Element)
+}
+
+export default Portal
+```
+
+# Usage
+
+```tsx
+const Page = () => {
+  return (
+    <div>
+      <Portal elementId="portal">
+        <div>This area is portal!!</div>
+      </Portal>
+    </div>
+  )
+}
+```
+
+Add a new element under the root element.
+
+## Next.js
+
+```tsx title="pages/_document.tsx"
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext
+} from 'next/document'
+import { Children } from 'react'
+
+export default class MyDocument extends Document {
+  static async getInitialProps(ctx: DocumentContext) {
+    const initialProps = await Document.getInitialProps(ctx)
+    return {
+      ...initialProps,
+      styles: Children.toArray(initialProps.styles)
+    }
+  }
+  render() {
+    return (
+      <Html lang="ko" dir="ltr">
+        <Head>
+          <meta charSet="utf-8" />
+          <meta name="theme-color" content="#20C3D0" />
+          <meta name="robots" content="index, follow" />
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+          />
+          <link rel="manifest" href="/site.webmanifest" />
+          <meta name="msapplication-TileColor" content="#20C3D0" />
+          <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+        </Head>
+        <body className="text-gray-700">
+          <Main />
+          <NextScript />
+          <----------------->
+          <div id="portal" />
+          <----------------->
+        </body>
+      </Html>
+    )
+  }
+}
+```
+
+## React
+
+```html title="public/index.html"
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <--------------------->
+    <div id="portal"></div>
+    <--------------------->
+  </body>
+</html>
+```

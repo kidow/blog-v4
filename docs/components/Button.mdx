@@ -1,12 +1,6 @@
----
-sidebar_position: 1
----
-
 import classnames from 'classnames'
 
-# Button
-
-```jsx title="components/Button/index.tsx"
+```tsx title="components/Button/index.tsx"
 import { FunctionComponent } from 'react'
 import classnames from 'classnames'
 
@@ -15,8 +9,8 @@ interface Props
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  loading?: boolean;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  loading?: boolean
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   theme?:
     | 'light'
     | 'dark'
@@ -24,7 +18,7 @@ interface Props
     | 'success'
     | 'danger'
     | 'primary'
-    | 'ghost';
+    | 'ghost'
 }
 
 const Button: FunctionComponent<Props> = ({
