@@ -6,16 +6,20 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'Kidow',
-  tagline: 'Dinosaurs are cool',
-  url: 'https://your-docusaurus-test-site.com',
+  title: 'Kidow Blog',
+  tagline: '문서같지만 개인 블로그입니다.',
+  url: 'https://kidow.me',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'facebook', // Usually your GitHub org/user name.
-  projectName: 'docusaurus', // Usually your repo name.
+  organizationName: 'kidow', // Usually your GitHub org/user name.
+  projectName: 'blog-v4', // Usually your repo name.
   plugins: ['docusaurus-tailwindcss'],
+  i18n: {
+    defaultLocale: 'ko',
+    locales: ['ko', 'en']
+  },
   presets: [
     [
       '@docusaurus/preset-classic',
@@ -51,11 +55,15 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'Resume',
             position: 'left',
-            label: 'Docs'
+            label: 'Posts'
           },
           { to: '/blog', label: 'Blog', position: 'left' },
+          {
+            type: 'localeDropdown',
+            position: 'right'
+          },
           {
             href: 'https://github.com/kidow',
             label: 'GitHub',
@@ -67,11 +75,11 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Posts',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro'
+                label: 'Résumé',
+                to: '/docs/resume'
               }
             ]
           },
@@ -106,7 +114,7 @@ const config = {
             ]
           }
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`
+        copyright: `Copyright © ${new Date().getFullYear()} Kidow Blog, Inc. Built with Docusaurus.`
       },
       prism: {
         theme: lightCodeTheme,
