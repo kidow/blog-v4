@@ -1,10 +1,6 @@
----
-sidebar_position: 1
----
-
 This hook allows you to manage all the state within one component.
 
-```tsx
+```typescript
 function useObject<T>(
   initialObject: T
 ): [

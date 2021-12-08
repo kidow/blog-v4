@@ -1,0 +1,36 @@
+```typescript
+import { atom, useRecoilState, useResetRecoilState } from 'recoil'
+
+const confirmState = atom<{ content: string; isOpen: boolean }>({
+  key: 'confirmState',
+  default: {
+    content: '',
+    isOpen: false
+  }
+})
+
+let confirmCb: any
+const useConfirm = () => {
+  const [state, setState] = useRecoilState()
+  const resetState = useResetRecoilState()
+
+  const onConfirm = () => {
+    resetState()
+    confirmCb(true)
+  }
+
+  const onCancel = () => {
+    resetModal()
+    confirmCb(false)
+  }
+
+  const confirm = (content: string): Promise<any> => {
+    setModal({ content, isOpen: true })
+    return new Promise((resolve, reject) => {
+      confirmCb = resolve
+    })
+  }
+
+  return { confirm, onConfirm, onCancel, confirmState: state }
+}
+```

@@ -1,0 +1,18 @@
+import classnames from 'classnames'
+
+### Prerequisite
+
+- should make the [`Portal`](/docs/components/Portal) component
+- should make the [`useToast`](/docs/hooks/useToast) hooks
+
+```tsx title="components/Toast/index.tsx"
+import { Portal } from 'components'
+
+const Toast = () => {
+  return (
+    <Portal elementId="toast-container">
+      <div></div>
+    </Portal>
+  )
+}
+```

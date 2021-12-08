@@ -1,10 +1,6 @@
----
-sidebar_position: 2
----
-
 This hook allows you to copy text.
 
-```ts
+```typescript
 const useCopyText = () => {
   if (!navigator) return
 
