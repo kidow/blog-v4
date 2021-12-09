@@ -46,7 +46,7 @@ export default function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext()
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
+      title="Kidow Blog"
       description="Description will go into a meta tag in <head />"
     >
       <header className="p-8 lg:py-16 lg:px-0 text-center bg-indigo-400">
@@ -56,7 +56,7 @@ export default function Home(): JSX.Element {
           <div className="flex items-center justify-center">
             <Link
               className="button button--secondary button--lg"
-              to="/docs/resume"
+              to="/docs/intro"
             >
               블로그 탐방하기
             </Link>

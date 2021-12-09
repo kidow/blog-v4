@@ -55,11 +55,12 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'Resume',
+            docId: 'Intro',
             position: 'left',
-            label: 'Posts'
+            label: '포스트'
           },
-          { to: '/blog', label: 'Blog', position: 'left' },
+          { to: '/blog', label: '블로그', position: 'left' },
+          { to: '/profile', label: '프로필', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right'
@@ -79,7 +80,7 @@ const config = {
             items: [
               {
                 label: 'Résumé',
-                to: '/docs/resume'
+                to: '/docs/intro'
               }
             ]
           },
