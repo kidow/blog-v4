@@ -60,7 +60,7 @@ const config = {
             label: '포스트'
           },
           { to: '/blog', label: '블로그', position: 'left' },
-          { to: '/profile', label: '프로필', position: 'left' },
+          // { to: '/profile', label: '프로필', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right'

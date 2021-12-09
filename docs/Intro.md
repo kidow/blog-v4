@@ -6,10 +6,10 @@ sidebar_position: 1
 
 제 블로그는 다음과 같은 내용들을 포함하고 있습니다.
 
-- [`Components`](/docs/components) : _직접 만들어 쓰는 리액트 컴포넌트들_
-- [`Hooks`](/docs/hooks) : _직접 만들어 쓰는 리액트 훅스 모음_
-- [`Projects`](/docs/projects) : _그동안 만든 프로젝트들_
-- [`Profile`](/profile) : _프로필_
+- [`Components`](/docs/components/Accordion) : _직접 만들어 쓰는 리액트 컴포넌트들_
+- [`Hooks`](/docs/hooks/useConfirm) : _직접 만들어 쓰는 리액트 훅스 모음_
+- [`Projects`](/docs/projects/Dynamisign) : _그동안 만든 프로젝트들_
+<!-- - [`Profile`](/profile) : _프로필_ -->
 - [`Blog`](/blog) : _블로그_
 
 이 사이트는 [`Docusaurus`](https://docusaurus.io/)로 만들었습니다.

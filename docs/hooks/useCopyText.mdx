@@ -1,6 +1,7 @@
 텍스트를 복사하는 hooks입니다.
 
 export const useCopyText = () => {
+  if (typeof window === 'undefined') return
   if (!window.navigator) return
   return (text) => {
     return new Promise((resolve, reject) => {
