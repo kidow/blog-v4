@@ -3,18 +3,13 @@
 
 /** @type { DefaultConfig & { theme: { extend: DefaultTheme } } } */
 module.exports = {
-  mode: 'jit',
-  purge: [
+  content: [
     './src/**/*.html',
     './src/**/*.js',
     './src/**/*.tsx',
     './docs/**/*.mdx'
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {}
-  },
-  variants: {
     extend: {}
   },
   plugins: []
