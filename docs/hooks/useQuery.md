@@ -2,11 +2,9 @@
 npm install query-string
 ```
 
-get query parameters, and set query parameters.
+쿼리 파라미터를 다룰 수 있는 hooks입니다.
 
-### Next.js
-
-```typescript
+```typescript title="Next.js"
 import queryString from 'query-string'
 
 function useQuery<T>(): {
@@ -26,9 +24,7 @@ function useQuery<T>(): {
 }
 ```
 
-### React
-
-```typescript
+```typescript title="React"
 import { useLocation, useHistory } from 'react-router-dom'
 import queryString from 'query-string'
 

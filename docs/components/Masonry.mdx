@@ -1,0 +1,32 @@
+export const Masonry = ({ children }) => {
+  return (
+    <div class="break-inside-avoid gap-2 columns-2 sm:columns-3 md:columns-4 lg:columns-4 xl:columns-6 2xl:columns-7">
+      {children}
+    </div>
+  )
+}
+
+```tsx title="components/Masonry/index.tsx"
+import type { FunctionComponent } from 'react'
+
+const Masonry = ({ children }) => {
+  return (
+    <div class="break-inside-avoid gap-2 columns-2 sm:columns-3 md:columns-4 lg:columns-4 xl:columns-6 2xl:columns-7">
+      {children}
+    </div>
+  )
+}
+
+export default Masonry
+```
+
+<Masonry>
+  {/* {Array.from({ length: 20 }).map((_, key) => (
+    <img src="https://i.pravatar.cc" key={key}>
+      asd
+    </img>
+  ))} */}
+  <img src="https://i.pravatar.cc" class="inline-block" />
+  <img src="https://i.pravatar.cc" class="inline-block" />
+  <img src="https://i.pravatar.cc" class="inline-block" />
+</Masonry>

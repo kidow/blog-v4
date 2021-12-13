@@ -12,4 +12,11 @@ sidebar_position: 1
 <!-- - [`Profile`](/profile) : _프로필_ -->
 - [`Blog`](/blog) : _블로그_
 
+저는 다음과 같은 스택을 사용합니다.
+
+- [`React`](https://ko.reactjs.org/)
+- [`Nextjs`](https://nextjs.org/)
+- [`Tailwindcss`](https://tailwindcss.com/)
+- [`Recoiljs`](https://recoiljs.org/)
+
 이 사이트는 [`Docusaurus`](https://docusaurus.io/)로 만들었습니다.
