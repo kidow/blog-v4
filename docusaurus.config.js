@@ -12,7 +12,7 @@ const config = {
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'favicon.ico',
   organizationName: 'kidow', // Usually your GitHub org/user name.
   projectName: 'blog-v4', // Usually your repo name.
   plugins: ['docusaurus-tailwindcss'],
@@ -47,10 +47,10 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'Kidow Blog',
+        title: '',
         logo: {
           alt: 'kidow-logo',
-          src: 'img/logo.svg'
+          src: 'logo.png'
         },
         items: [
           {
@@ -66,9 +66,10 @@ const config = {
             position: 'right'
           },
           {
-            href: 'https://github.com/kidow',
-            label: 'GitHub',
-            position: 'right'
+            href: 'https://github.com/kidow/blog-v4',
+            position: 'right',
+            className: 'header-github-link',
+            'aria-label': 'GitHub repository'
           }
         ]
       },

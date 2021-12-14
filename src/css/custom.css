@@ -42,4 +42,19 @@ button {
   .required {
     @apply text-red-500;
   }
+  .header-github-link {
+    @apply hover:opacity-60;
+  }
+}
+
+.header-github-link::before {
+  content: '';
+  width: 26px;
+  height: 24px;
+  display: flex;
+  background: url('/github-black.svg') no-repeat;
+}
+
+html[data-theme='dark'] .header-github-link::before {
+  background: url('/github-white.svg') no-repeat;
 }

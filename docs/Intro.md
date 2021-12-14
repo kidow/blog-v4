@@ -17,6 +17,7 @@ sidebar_position: 1
 
 - [`React`](https://ko.reactjs.org/)
 - [`Nextjs`](https://nextjs.org/)
+- [`Typescript`](https://www.typescriptlang.org/)
 - [`Tailwindcss`](https://tailwindcss.com/)
 - [`Recoiljs`](https://recoiljs.org/)
 
