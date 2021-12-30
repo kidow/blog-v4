@@ -20,5 +20,6 @@ sidebar_position: 1
 - [`Typescript`](https://www.typescriptlang.org/)
 - [`Tailwindcss`](https://tailwindcss.com/)
 - [`Recoiljs`](https://recoiljs.org/)
+- [`Heroicons`](https://heroicons.com) : Tailwind icons
 
 이 사이트는 [`Docusaurus`](https://docusaurus.io/)로 만들었습니다.

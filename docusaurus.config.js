@@ -49,7 +49,7 @@ const config = {
       navbar: {
         title: '',
         logo: {
-          alt: 'kidow-logo',
+          alt: 'logo',
           src: 'logo.png'
         },
         items: [
@@ -60,7 +60,12 @@ const config = {
             label: '포스트'
           },
           { to: '/blog', label: '블로그', position: 'left' },
-          // { to: '/profile', label: '프로필', position: 'left' },
+          {
+            to: '/profile',
+            label: '프로필',
+            position: 'left',
+            activeBaseRegex: 'profile/'
+          },
           {
             type: 'localeDropdown',
             position: 'right'
@@ -121,6 +126,9 @@ const config = {
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme
+      },
+      colorMode: {
+        defaultMode: 'dark'
       }
     })
 }
