@@ -60,12 +60,12 @@ const config = {
             label: '포스트'
           },
           { to: '/blog', label: '블로그', position: 'left' },
-          {
-            to: '/profile',
-            label: '프로필',
-            position: 'left',
-            activeBaseRegex: 'profile/'
-          },
+          // {
+          //   to: '/profile',
+          //   label: '프로필',
+          //   position: 'left',
+          //   activeBaseRegex: 'profile/'
+          // },
           {
             type: 'localeDropdown',
             position: 'right'
