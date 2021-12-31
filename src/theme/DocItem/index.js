@@ -17,7 +17,7 @@ import TOCCollapsible from '@theme/TOCCollapsible'
 import { MainHeading } from '@theme/Heading'
 import styles from './styles.module.css'
 import { ThemeClassNames } from '@docusaurus/theme-common'
-import Comment from '@site/src/components/Comment'
+import { Comment } from '@site/src/components'
 export default function DocItem(props) {
   const { content: DocContent } = props
   const { metadata, frontMatter } = DocContent

@@ -11,7 +11,7 @@ import BlogPostItem from '@theme/BlogPostItem'
 import BlogPostPaginator from '@theme/BlogPostPaginator'
 import { ThemeClassNames } from '@docusaurus/theme-common'
 import TOC from '@theme/TOC'
-import Comment from '@site/src/components/Comment'
+import { Comment } from '@site/src/components'
 
 function BlogPostPage(props) {
   const { content: BlogPostContents, sidebar } = props

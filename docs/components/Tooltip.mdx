@@ -1,0 +1,66 @@
+import classnames from 'classnames'
+import { Required } from '@site/src/components'
+
+```tsx title="components/Tooltip/index.tsx"
+import type { FunctionComponent } from 'react'
+import classnames from 'classnames'
+
+export interface Props {
+  text: string
+  placement: 'top' | 'bottom' | 'left' | 'right'
+}
+interface State {}
+
+const Tooltip: FunctionComponent<Props> = ({ children, text, ...props }) => {
+  const [show, setShow] = React.useState(false)
+  return (
+    <div>
+      <div>
+        {text}
+        <span />
+      </div>
+      <div
+        onMouseEnter={() => setShow(true)}
+        onMouseLeave={() => setShow(false)}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export default Tooltip
+```
+
+export const Tooltip = ({ children, text, placement = 'top', ...props }) => {
+  const [show, setShow] = React.useState(false)
+  return (
+    <div class="relative inline-block">
+      <div
+        class={classnames(
+          'absolute bg-black text-white p-1 rounded top-[calc(100%+10px)]',
+          show ? 'block' : 'hidden'
+        )}
+      >
+        {text}
+        <span class="absolute -top-2 left-1/2 border-4 border-solid border-x-transparent border-t-black border-b-black" />
+      </div>
+      <div
+        onMouseEnter={() => setShow(true)}
+        onMouseLeave={() => setShow(false)}
+      >
+        {children}
+      </div>
+    </div>
+  )
+}
+
+## Props
+
+| Name             | Type   | Default |
+| ---------------- | ------ | ------- |
+| text<Required /> | string |         |
+
+<Tooltip text="tooltip">
+  <button>Hover me</button>
+</Tooltip>
