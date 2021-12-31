@@ -9,7 +9,7 @@ const giscusSelector = 'iframe.giscus-frame'
 
 const Comment: FunctionComponent<Props> = () => {
   const { isDarkTheme } = useThemeContext()
-  const theme = isDarkTheme ? 'dark' : 'light'
+  const theme = isDarkTheme ? 'dark_dimmed' : 'light'
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

@@ -87,12 +87,12 @@ export default function DocItem(props) {
                 <DocContent />
               </div>
 
-              <Comment />
+              <DocItemFooter {...props} />
             </article>
 
+            <Comment />
             <DocPaginator previous={metadata.previous} next={metadata.next} />
           </div>
-          <DocItemFooter {...props} />
         </div>
         {renderTocDesktop && (
           <div className="col col--3">
