@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { Required } from '@site/src/components'
 
 ```tsx title="components/Modal/index.tsx"
 import type { FunctionComponent } from 'react'
@@ -76,11 +77,11 @@ export default Modal
 
 ## Props
 
-| Name                                    | Type                                                                                                                                                                                                                                   | Default  |
-| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| isOpen<span class="required">\*</span>  | _boolean_                                                                                                                                                                                                                              | false    |
-| onClose<span class="required">\*</span> | _function_                                                                                                                                                                                                                             |          |
-| maxWidth                                | _max-w-xs_ _max-w-sm_ _max-w-md_ _max-w-lg_ _max-w-xl_ _max-w-2xl_ _max-w-3xl_ _max-w-4xl_ _max-w-5xl_ _max-w-6xl_ _max-w-7xl_ _max-w-full_ _max-w-screen-sm_ _max-w-screen-md_ _max-w-screen-lg_ _max-w-screen-xl_ _max-w-screen-2xl_ | max-w-lg |
+| Name                | Type                                                                                                                                                                                                                                   | Default  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| isOpen<Required />  | _boolean_                                                                                                                                                                                                                              | false    |
+| onClose<Required /> | _function_                                                                                                                                                                                                                             |          |
+| maxWidth            | _max-w-xs_ _max-w-sm_ _max-w-md_ _max-w-lg_ _max-w-xl_ _max-w-2xl_ _max-w-3xl_ _max-w-4xl_ _max-w-5xl_ _max-w-6xl_ _max-w-7xl_ _max-w-full_ _max-w-screen-sm_ _max-w-screen-md_ _max-w-screen-lg_ _max-w-screen-xl_ _max-w-screen-2xl_ | max-w-lg |
 
 ## Usage
 

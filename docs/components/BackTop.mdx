@@ -1,0 +1,50 @@
+import classnames from 'classnames'
+import { ChevronUpIcon } from '@heroicons/react/outline'
+import useThemeContext from '@theme/hooks/useThemeContext'
+
+```bash
+npm install @heroicons/react
+```
+
+```tsx title="components/BackTop/index.tsx"
+import { FunctionComponent } from 'react'
+import classnames from 'classnames'
+import { ChevronUpIcon } from '@heroicons/react/outline'
+
+export interface Props {}
+interface State {}
+
+const BackTop: FunctionComponent<Props> = () => {
+  return (
+    <button
+      className={classnames(
+        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center bg-black rounded-full'
+      )}
+      onClick={() => window.scrollTo(0, 0)}
+    >
+      <ChevronUpIcon className="h-7 w-7 text-white" />
+    </button>
+  )
+}
+
+export default BackTop
+```
+
+export const BackTop = () => {
+  const { isDarkTheme } = useThemeContext()
+  return (
+    <button
+      class={classnames(
+        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center rounded-full',
+        isDarkTheme ? 'bg-white' : 'bg-black'
+      )}
+      onClick={() => window.scrollTo(0, 0)}
+    >
+      <ChevronUpIcon
+        class={classnames('h-7 w-7', isDarkTheme ? 'text-black' : 'text-white')}
+      />
+    </button>
+  )
+}
+
+<BackTop />

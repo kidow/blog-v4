@@ -1,6 +1,7 @@
 ```tsx title="components/Portal/index.tsx"
 import type { FunctionComponent } from 'react'
 import { createPortal } from 'react-dom'
+import { Required } from '@site/src/components'
 
 export interface Props {
   elementId: string
@@ -20,9 +21,9 @@ export default Portal
 
 ## Props
 
-| Name                                      | Type     | Default |
-| ----------------------------------------- | -------- | ------- |
-| elementId<span class="required">\*</span> | _string_ |         |
+| Name                  | Type     | Default |
+| --------------------- | -------- | ------- |
+| elementId<Required /> | _string_ |         |
 
 ## Usage
 
