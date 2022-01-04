@@ -1,7 +1,7 @@
 랜덤 uuid를 생성하는 함수입니다.
 
 ```typescript
-const uuid = () => {
+export const uuid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     let r = (Math.random() * 16) | 0
     let v = c === 'x' ? r : (r & 0x3) | 0x8

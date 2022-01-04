@@ -1,7 +1,7 @@
 base64 형식의 `string` 타입 변수를 `File`로 변환하는 함수입니다.
 
 ```typescript
-const base64ToFile = (base64: string) => {
+export const base64ToFile = (base64: string) => {
   let arr = base64.split(',')
   let mime = arr[0].match(/:(.*?);/)![1]
   let bstr = atob(arr[1])

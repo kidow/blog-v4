@@ -20,9 +20,9 @@ const Comment: FunctionComponent<Props> = () => {
       const attributes = {
         src: 'https://giscus.app/client.js',
         'data-repo': 'kidow/blog-v4',
-        'data-repo-id': 'R_kgDOGfWNiA=',
-        'data-category': 'Announcements',
-        'data-category-id': 'DIC_kwDOGfWNiM4CAevy',
+        'data-repo-id': 'R_kgDOGfWNiA',
+        'data-category': 'Show and tell',
+        'data-category-id': 'DIC_kwDOGfWNiM4CAev2',
         'data-mapping': 'title',
         'data-reactions-enabled': '1',
         'data-emit-metadata': '0',

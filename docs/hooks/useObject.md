@@ -1,4 +1,4 @@
-This hook allows you to manage all the state within one component.
+한 컴포넌트에서 쓰는 State들을 하나의 hooks로 관리할 수 있도록 만든 hooks입니다.
 
 ```typescript
 function useObject<T>(
@@ -58,7 +58,7 @@ function useObject<T>(
 ## Usage
 
 ```tsx
-import { useObject } from '../path'
+import { useObject } from 'services'
 
 interface State {
   isLoading: boolean
