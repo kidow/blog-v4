@@ -5,7 +5,10 @@ export const useCopyText = () => {
   if (!window.navigator) return
   return (text) => {
     return new Promise((resolve, reject) => {
-      window.navigator.clipboard.writeText(text).then(resolve).catch(reject)
+      window.navigator.clipboard
+        .writeText(text)
+        .then(() => resolve(text))
+        .catch(reject)
     })
   }
 }
@@ -13,7 +16,10 @@ export const useCopyText = () => {
 export const Button = () => {
   const copyText = useCopyText()
   return (
-    <button class="p-1" onClick={() => copyText('Copy!')}>
+    <button
+      class="p-1"
+      onClick={() => copyText('Copy!').then((text) => window.alert(text))}
+    >
       Copy!
     </button>
   )
@@ -25,7 +31,10 @@ const useCopyText = () => {
 
   const copyText = (text: value): Promise<void> => {
     return new Promise((resolve, reject) => {
-      window.navigator.clipboard.writeText(text).then(resolve).catch(reject)
+      window.navigator.clipboard
+        .writeText(text)
+        .then(() => resolve(text))
+        .catch(reject)
     })
   }
 
@@ -58,5 +67,4 @@ const Page = () => {
 }
 ```
 
-<Button>Copy!</Button>
-<input placeholder="Paste" />
+<Button>Copy this.</Button>
