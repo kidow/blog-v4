@@ -2,5 +2,48 @@
 
 ```typescript
 export const enumToOptions = (enumObj: any) =>
-  Object.entries<string>(enumObj).map(([key, value]) => ({ value, name }))
+  Object.entries<string>(enumObj).map(([name, value]) => ({ value, name }))
+```
+
+## 예시
+
+```tsx title="pages/index.tsx"
+import React, { Fragment } from 'react'
+import { enumToOptions } from 'services'
+
+enum ProgrammingLanguage {
+  'Javascript' = '자바스크립트',
+  'Typescript' = '타입스크립트',
+  'Python' = '파이썬',
+  'Node.js' = '노드js'
+}
+
+const Home = () => {
+  return (
+    <div>
+      {/* Select */}
+      <select>
+        <option value="">전체</option>
+        {enumToOptions(ProgrammingLanguage).map((option, key) => (
+          <option key={key} value={option.value}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+
+      {/* Radio */}
+      {enumToOptions(ProgrammingLanguage).map((option, key) => (
+        <Fragment key={key}>
+          <input
+            type="radio"
+            id={option.name + key}
+            name={option.name}
+            value={option.value}
+          />
+          <label for={option.name + key}>{option.name}</label>
+        </Fragment>
+      ))}
+    </div>
+  )
+}
 ```
