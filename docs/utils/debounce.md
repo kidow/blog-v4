@@ -1,6 +1,6 @@
 `lodash`의 `debounce`를 직접 구현한 함수입니다.
 
-```typescript title="utils/index.ts"
+```typescript title="services/utils/index.ts"
 export function debounce(func: Function, wait: number) {
   let timeout
   return function (...args) {

@@ -1,7 +1,7 @@
 한 컴포넌트에서 쓰는 State들을 하나의 hooks로 관리할 수 있도록 만든 hooks입니다.
 
-```typescript
-function useObject<T>(
+```typescript title="services/hooks/index.tsx"
+export function useObject<T>(
   initialObject: T
 ): [
   T,

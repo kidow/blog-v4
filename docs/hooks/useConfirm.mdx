@@ -1,4 +1,4 @@
-```typescript title="services/hooks/index.tsx"
+```typescript title="services/store/index.ts"
 import { atom, useRecoilState, useResetRecoilState } from 'recoil'
 
 const confirmState = atom<{ content: string; isOpen: boolean }>({
@@ -8,7 +8,9 @@ const confirmState = atom<{ content: string; isOpen: boolean }>({
     isOpen: false
   }
 })
+```
 
+```typescript title="services/hooks/index.tsx"
 let confirmCb: any
 const useConfirm = () => {
   const [state, setState] = useRecoilState()
