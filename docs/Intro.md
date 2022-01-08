@@ -11,7 +11,7 @@ sidebar_position: 1
 - [`Utils`](/docs/utils/base64ToFile) : 자주 쓰는 Typescript 함수 모음
 - [`Projects`](/docs/projects/Dynamisign) : _그동안 만든 프로젝트들_
 <!-- - [`Profile`](/profile) : _프로필_ -->
-- [`Blog`](/blog) : _블로그_
+- [`Blog`](/blog) : _블로그 포스팅_
 
 저는 다음과 같은 스택을 사용합니다.
 
@@ -20,6 +20,6 @@ sidebar_position: 1
 - [`Typescript`](https://www.typescriptlang.org/)
 - [`Tailwindcss`](https://tailwindcss.com/)
 - [`Recoiljs`](https://recoiljs.org/)
-- [`Heroicons`](https://heroicons.com) (Tailwindcss Icons)
+- [`Heroicons`](https://heroicons.com) _(Tailwindcss Icons)_
 
 이 사이트는 [`Docusaurus`](https://docusaurus.io/)로 만들었습니다.

@@ -1,3 +1,10 @@
+`window.confirm`시 뜨는 모달을 직접 커스텀해서 유사하게 구현한 hooks입니다.
+
+## 조건
+
+- [`Modal`](/docs/components/Modal) component
+- [`Portal`](/docs/components/Portal) component
+
 ```typescript title="services/store/index.ts"
 import { atom, useRecoilState, useResetRecoilState } from 'recoil'
 
@@ -17,22 +24,140 @@ const useConfirm = () => {
   const resetState = useResetRecoilState()
 
   const onConfirm = () => {
-    resetState()
     confirmCb(true)
+    resetState()
   }
 
   const onCancel = () => {
-    resetModal()
     confirmCb(false)
+    resetState()
   }
 
   const confirm = (content: string): Promise<any> => {
-    setModal({ content, isOpen: true })
+    setState({ content, isOpen: true })
     return new Promise((resolve, reject) => {
       confirmCb = resolve
     })
   }
 
-  return { confirm, onConfirm, onCancel, confirmState: state }
+  return {
+    confirm,
+    onConfirm,
+    onCancel,
+    confirmState: state,
+    resetConfirmState: resetState
+  }
+}
+```
+
+```tsx title="containers/Modal/Confirm/index.tsx"
+import type { FunctionComponent } from 'react'
+import { Modal } from 'containers'
+import { useConfirm } from 'services'
+
+interface Props {}
+
+const ConfirmModal: FunctionComponent<Props> = () => {
+  const { onConfirm, onCancel, content, confirmState, resetConfirmState } =
+    useConfirm()
+  if (!confirmState.isOpen) return null
+  return (
+    <Modal
+      isOpen={confirmState.isOpen}
+      onClose={resetConfirmState}
+      maxWidth="max-w-sm"
+    >
+      <div className="p-4">
+        <div>{content}</div>
+        <div className="flex justify-between">
+          <button onClick={onCancel}>아니오</button>
+          <button onClick={onConfirm}>예</button>
+        </div>
+      </div>
+    </Modal>
+  )
+}
+
+export default ConfirmModal
+```
+
+## Settings
+
+### Next.js
+
+```tsx title="containers/Provider/Confirm/index.tsx"
+import type { FunctionComponent } from 'react'
+import { useConfirm } from 'services'
+import { ConfirmModal } from 'containers'
+
+interface Props {}
+
+const ConfirmProvider: FunctionComponent<Props> = ({ children }) => {
+  return (
+    <>
+      {children}
+      <ConfirmModal />
+    </>
+  )
+}
+```
+
+```tsx title="pages/_app.tsx"
+import App from 'next/app'
+import { ConfirmProvider } from 'containers'
+
+class MyApp extends App {
+  render() {
+    const { Component, pageProps } = this.props
+    return (
+      <ConfirmProvider>
+        <Component {...pageProps} />
+      </ConfirmProvider>
+    )
+  }
+}
+
+export default MyApp
+```
+
+### React
+
+```tsx title="src/App.tsx"
+import { ConfirmModal } from 'containers'
+
+const App = () => {
+  return (
+    <>
+      <div>Create React App</div>
+      <ConfirmModal />
+    </>
+  )
+}
+
+export default App
+```
+
+## Usage
+
+```tsx
+import { useConfirm } from 'services'
+
+const Page = () => {
+  const { confirm } = useConfirm()
+
+  const handleConfirm = async () => {
+    try {
+      const isConfirmed = await confirm('작성을 중단하시겠습니까?')
+      console.log('isConfirmed', isConfirmed)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  return (
+    <div>
+      <button onClick={handleConfirm}>Confirm</button>
+    </div>
+  )
 }
 ```

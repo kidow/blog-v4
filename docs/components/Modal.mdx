@@ -1,10 +1,12 @@
 import classnames from 'classnames'
 import { Required } from '@site/src/components'
 
-```tsx title="containers/Modal/index.tsx"
-import type { FunctionComponent } from 'react'
+## 조건
 
-type TMaxWidth =
+- [`Portal`](/docs/components/Portal) component
+
+```typescript title="types/index.d.ts"
+export type TMaxWidth =
   | 'max-w-screen-2xl'
   | 'max-w-screen-xl'
   | 'max-w-screen-lg'
@@ -23,11 +25,16 @@ type TMaxWidth =
   | 'max-w-sm'
   | 'max-w-xs'
 
-interface IModal {
+export interface IModal {
   isOpen: boolean
   onClose: () => void
   maxWidth: TMaxWidth
 }
+```
+
+```tsx title="containers/Modal/index.tsx"
+import type { FunctionComponent } from 'react'
+import type { TMaxWidth, IModal } from 'types'
 
 export interface Props extends IModal {}
 interface State {}
@@ -86,7 +93,6 @@ export default Modal
 ## Usage
 
 ```tsx
-import React from 'react'
 import { useObject } from 'hooks'
 import { Modal } from 'components'
 
