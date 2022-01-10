@@ -1,6 +1,3 @@
-import { Required, Table } from '@site/src/components'
-
-```tsx title="containers/Table/index.tsx"
 import React from 'react'
 import type { ReactNode } from 'react'
 import classnames from 'classnames'
@@ -81,11 +78,3 @@ function Table<T>({
 }
 
 export default Table
-```
-
-## Props
-
-| Name    | Type     | Default |
-| ------- | -------- | ------- |
-| list    | Array    |         |
-| columns | string[] |         |
