@@ -18,11 +18,11 @@ function Table<T>({
   list,
   columns,
   renderItem,
-  isAllSelected,
+  isAllSelected = false,
   onSelectAll,
   loading,
   header,
-  selection = true,
+  selection = false,
   maxHeight = 'max-h-96'
 }: Props<T>) {
   return (

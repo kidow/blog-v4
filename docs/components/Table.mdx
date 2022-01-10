@@ -1,5 +1,20 @@
 import { Required, Table } from '@site/src/components'
 
+```css title="root file style.css"
+@layer base;
+@layer components;
+@layer utilities;
+
+@layer components {
+  .react-table-row-group > div {
+    @apply table-row text-sm text-gray-500 overflow-x-auto hover:bg-blue-50 even:bg-gray-50;
+  }
+  .react-table-row-group > div > div {
+    @apply table-cell px-6 py-4 align-top;
+  }
+}
+```
+
 ```tsx title="containers/Table/index.tsx"
 import React from 'react'
 import type { ReactNode } from 'react'
@@ -85,7 +100,40 @@ export default Table
 
 ## Props
 
-| Name    | Type     | Default |
-| ------- | -------- | ------- |
-| list    | Array    |         |
-| columns | string[] |         |
+| Name                  | Type             | Default    |
+| --------------------- | ---------------- | ---------- |
+| list<Required/>       | any array        |            |
+| columns<Required/>    | array of strings |            |
+| renderItem<Required/> | function         |            |
+| isAllSelected         | boolean          | false      |
+| onSelectAll           | function         |            |
+| loading               | boolean          | false      |
+| header                | node             |            |
+| selection             | boolean          | false      |
+| maxHeight             | string           | `max-h-96` |
+
+<Table
+  list={[
+    {
+      country: 'USA',
+      capital: 'Washington D.C.',
+      population: '309 million',
+      language: 'English'
+    },
+    {
+      country: 'Sweden',
+      capital: 'Stockholm',
+      population: '9 million',
+      language: 'Swedish'
+    }
+  ]}
+  columns={['Countries', 'Capitals', 'Population', 'Language']}
+  renderItem={(item, key) => (
+    <div key={key}>
+      <div>{item.country}</div>
+      <div>{item.capital}</div>
+      <div>{item.population}</div>
+      <div>{item.language}</div>
+    </div>
+  )}
+/>

@@ -45,6 +45,12 @@ button {
   .header-github-link {
     @apply hover:opacity-60;
   }
+  .react-table-row-group > div {
+    @apply table-row text-sm text-gray-500 overflow-x-auto hover:bg-blue-50;
+  }
+  .react-table-row-group > div > div {
+    @apply table-cell px-6 py-4 align-top;
+  }
 }
 
 .header-github-link::before {
@@ -57,4 +63,12 @@ button {
 
 html[data-theme='dark'] .header-github-link::before {
   background: url('/github-white.svg') no-repeat;
+}
+
+.react-table-row-group > div:nth-child(2) {
+  background-color: rgb(249 250 251);
+}
+
+.react-table-row-group > div:nth-child(2):hover {
+  background-color: rgb(239 246 255);
 }
