@@ -1,7 +1,3 @@
-import classnames from 'classnames'
-import { Required, Tooltip } from '@site/src/components'
-
-```tsx title="components/Tooltip/index.tsx"
 import React from 'react'
 import type { FunctionComponent } from 'react'
 import classnames from 'classnames'
@@ -53,43 +49,3 @@ const Tooltip: FunctionComponent<Props> = ({
 }
 
 export default Tooltip
-```
-
-## Props
-
-| Name                 | Type                          | Default |
-| -------------------- | ----------------------------- | ------- |
-| content<Required />  | string                        |         |
-| position<Required /> | `top` `right` `bottom` `left` |         |
-| border               | boolean                       | true    |
-| theme                | `dark` `light`                | `light` |
-| padding              | boolean                       | true    |
-| className            | string                        |         |
-
-### position
-
-<div className="arrange">
-  <Tooltip position="top" content="top">
-    Top
-  </Tooltip>
-  <Tooltip position="bottom" content="bottom">
-    Bottom
-  </Tooltip>
-  <Tooltip position="left" content="left">
-    Left
-  </Tooltip>
-  <Tooltip position="right" content="right">
-    Right
-  </Tooltip>
-</div>
-
-### theme
-
-<div className="arrange">
-  <Tooltip position="top" theme="light">
-    light
-  </Tooltip>
-  <Tooltip position="top" theme="dark">
-    dark
-  </Tooltip>
-</div>

@@ -2,6 +2,7 @@ import { Required } from '@site/src/components'
 
 ```tsx title="components/Portal/index.tsx"
 import type { FunctionComponent } from 'react'
+import { useMemo } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface Props {

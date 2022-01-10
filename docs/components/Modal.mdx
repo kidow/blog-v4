@@ -28,55 +28,93 @@ export type TMaxWidth =
 export interface IModal {
   isOpen: boolean
   onClose: () => void
-  maxWidth: TMaxWidth
+  title: string
+  maxWidth?: TMaxWidth
+  description?: ReactNode
+  padding?: boolean
 }
 ```
 
 ```tsx title="containers/Modal/index.tsx"
-import type { FunctionComponent } from 'react'
-import type { TMaxWidth, IModal } from 'types'
+import React, { FunctionComponent, useEffect } from 'react'
+import { IModal } from 'types'
+import { XIcon } from '@heroicons/react/solid'
+import classnames from 'classnames'
+import { Portal } from 'components'
 
-export interface Props extends IModal {}
+interface Props extends IModal {}
 interface State {}
 
 const Modal: FunctionComponent<Props> = ({
   isOpen,
   onClose,
   children,
-  maxWidth
+  maxWidth = 'max-w-lg',
+  title,
+  description,
+  padding = true
 }) => {
   if (!isOpen) return null
+  const onEscape = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') onClose()
+  }
+  useEffect(() => {
+    window.addEventListener('keydown', onEscape)
+    return () => {
+      window.removeEventListener('keydown', onEscape)
+    }
+  }, [])
   return (
-    <div
-      className="fixed z-10 inset-0 overflow-y-auto"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-    >
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div
-          className="fixed inset-0 bg-black opacity-30 transition-opacity"
-          aria-hidden="true"
-          onClick={onClose}
-        ></div>
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        >
-          &#8203;
-        </span>
-        <div
-          className={`inline-block align-bottom rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:${maxWidth} sm:w-full`}
-        >
-          <div className="bg-black px-4 py-5 sm:p-6">{children}</div>
+    <Portal elementId="modal-root">
+      <div
+        className="fixed z-30 inset-0 overflow-y-auto"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="flex items-end justify-center min-h-screen text-center md:block p-0">
+          <div
+            className="fixed inset-0 bg-black opacity-30 transition-opacity"
+            aria-hidden="true"
+            onClick={onClose}
+          ></div>
+          <span
+            className="hidden md:inline-block align-middle h-screen"
+            aria-hidden="true"
+          >
+            &#8203;
+          </span>
+          <div
+            className={`inline-block rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle w-full ${maxWidth}`}
+          >
+            <header className="bg-white border-t-4 border-gray-800">
+              <div className="flex items-center py-3 px-4 border-b border-gray-200">
+                <div className="flex-1">
+                  <h1 className="text-2xl font-semibold">{title}</h1>
+                  {!!description && (
+                    <p className="text-sm mt-1 text-gray-400">{description}</p>
+                  )}
+                </div>
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-full hover:bg-gray-300"
+                >
+                  <XIcon className="w-5 h-5 text-gray-800" />
+                </button>
+              </div>
+            </header>
+            <div
+              className={classnames('bg-white', {
+                'py-6 px-7': padding
+              })}
+            >
+              {children}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Portal>
   )
-}
-
-Modal.defaultProps = {
-  maxWidth: 'max-w-lg'
 }
 
 export default Modal
