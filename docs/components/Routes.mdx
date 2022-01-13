@@ -1,0 +1,35 @@
+> Only React, not Next.js.
+
+```bash
+npm install react-router-dom
+npm install --dev @types/react-router-dom
+```
+
+```tsx title="src/components/Routes/index.tsx"
+import pages from 'pages'
+import { Route, BrowserRouter, Routes } from 'react-router-dom'
+
+export default () => {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {pages.map(({ path, element: Element }, key) => (
+          <Route key={key} path={path} element={<Element.default />} />
+        ))}
+      </Routes>
+    </BrowserRouter>
+  )
+}
+```
+
+```typescript title="src/pages/index.ts"
+import type { RouteProps } from 'react-router-dom'
+
+const pages: RouteProps[] = [
+  { path: '/', element: require('./_') },
+  { path: '/login', element: require('./login') },
+  { path: '/signup', element: require('./signup') }
+]
+
+export default pages
+```
