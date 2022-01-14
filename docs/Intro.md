@@ -7,9 +7,11 @@ sidebar_position: 1
 제 블로그는 다음과 같은 내용들을 포함하고 있습니다.
 
 - [`Components`](/docs/components/Accordion) : _직접 만들어 쓰는 리액트 컴포넌트들_
-- [`Hooks`](/docs/hooks/useConfirm) : _직접 만들어 쓰는 리액트 훅스 모음_
+- [`Hooks`](/docs/hooks/useComponentDidUpdate) : _직접 만들어 쓰는 리액트 훅스 모음_
 - [`Utils`](/docs/utils/base64ToFile) : 자주 쓰는 Typescript 함수 모음
 - [`Projects`](/docs/projects/Dynamisign) : _그동안 만든 프로젝트들_
+- [`Settings`](/docs/Settings/code-snippets) : _개발 기본 세팅_
+- [`Errors`](/docs/Errors/temp) : _자주 발생했던 에러 정리_
 <!-- - [`Profile`](/profile) : _프로필_ -->
 - [`Blog`](/blog) : _블로그 포스팅_
 
@@ -21,5 +23,6 @@ sidebar_position: 1
 - [`Tailwindcss`](https://tailwindcss.com/)
 - [`Recoiljs`](https://recoiljs.org/)
 - [`Heroicons`](https://heroicons.com) _(Tailwindcss Icons)_
+- [`classnames`](https://www.npmjs.com/package/classnames)
 
 이 사이트는 [`Docusaurus`](https://docusaurus.io/)로 만들었습니다.
