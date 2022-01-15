@@ -1,0 +1,80 @@
+import { Required } from '@site/src/components'
+
+```tsx title="components/Tabs/index.tsx"
+import type { FC } from 'react'
+import { useMemo } from 'react'
+import classnames from 'classnames'
+
+interface Props {
+  list: string[]
+  value: number
+  onChange: (tab: number) => void
+}
+
+const Tabs: FC<Props> = ({ list, value, onChange }) => {
+  const left: number = useMemo(() => {
+    const tabContainer = document.getElementById('tab-container')
+    const element = document.getElementById(`tab-${value}`)
+    if (!element || !tabContainer) return 0
+    return (
+      element.getBoundingClientRect().left -
+      tabContainer.getBoundingClientRect().left
+    )
+  }, [value])
+
+  const width: number = useMemo(() => {
+    const element = document.getElementById(`tab-${value}`)
+    return element?.getBoundingClientRect().width || 0
+  }, [value])
+
+  return (
+    <div id="tab-container" className="border-b relative border-gray-200">
+      <div className="flex gap-8">
+        {list.map((item, key) => (
+          <div
+            key={key}
+            className={classnames(
+              'py-6 cursor-pointer transition duration-100 font-medium',
+              value === key ? 'text-blue-600' : 'text-gray-600'
+            )}
+            id={`tab-${key}`}
+            onClick={() => onChange(key)}
+          >
+            {item}
+          </div>
+        ))}
+      </div>
+      <div
+        className="h-0.5 bg-blue-600 absolute bottom-0 transition-all duration-300"
+        style={{ left, width }}
+      />
+    </div>
+  )
+}
+
+export default Tabs
+```
+
+## Props
+
+| Name                 | Type             | Default |
+| -------------------- | ---------------- | ------- |
+| list<Required />     | array of strings |         |
+| value<Required />    | number           |         |
+| onChange<Required /> | function         |         |
+
+## Example
+
+<iframe
+  src="https://codesandbox.io/embed/blog-v4-ub7ie?fontsize=14&hidenavigation=1&initialpath=%2Ftabs&theme=dark&view=preview"
+  style={{
+    width: '100%',
+    height: 500,
+    border: 0,
+    borderRadius: 4,
+    overflow: 'hidden'
+  }}
+  title="Blog-v4"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
