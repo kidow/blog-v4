@@ -3,6 +3,9 @@
 
 /** @type { DefaultConfig & { theme: { extend: DefaultTheme } } } */
 module.exports = {
+  corePlugins: {
+    preflight: false
+  },
   content: [
     './src/**/*.html',
     './src/**/*.js',
