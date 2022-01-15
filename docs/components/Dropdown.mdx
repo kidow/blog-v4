@@ -1,0 +1,86 @@
+import { Required } from '@site/src/components'
+
+```tsx title="components/Dropdown/index.tsx"
+import { useRef } from 'react'
+import type { FC } from 'react'
+import { useObject, useOnClickOutside } from 'services'
+import classnames from 'classnames'
+
+export interface Props {
+  list: string[]
+  onClick: (value: string) => void
+  label?: string
+}
+interface State {
+  isOpen: boolean
+}
+
+const Dropdown: FC<Props> = ({ list, onClick, label = 'Dropdown' }) => {
+  const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
+  const ref = useRef<HTMLButtonElement | null>(null)
+  useOnClickOutside(ref, () => setState({ isOpen: false }), 'dropdown')
+  return (
+    <button
+      className={classnames('relative text-sm font-medium', {
+        'bg-gray-200 rounded-md': isOpen
+      })}
+      ref={ref}
+    >
+      <div
+        className="inline-flex items-center px-4 py-2 hover:bg-gray-200 rounded-md after:content-[''] after:h-1.5 after:w-1.5 after:bg-transparent after:border-b after:border-r after:ml-2 after:border-gray-800 after:block after:rotate-45"
+        onClick={() => setState({ isOpen: !isOpen })}
+        aria-haspopup="true"
+        aria-expanded="true"
+      >
+        {label}
+      </div>
+      {isOpen && (
+        <div
+          className="absolute top-10 bg-gray-200 rounded-md p-1 min-w-full text-left"
+          role="none"
+        >
+          {list.map((item, key) => (
+            <div
+              onClick={() => {
+                onClick(item)
+                setState({ isOpen: false })
+              }}
+              className="hover:bg-gray-300 p-2 rounded-md"
+              role="menuitem"
+              tabIndex={-1}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
+    </button>
+  )
+}
+
+export default Dropdown
+```
+
+## Props
+
+| Name                | Type             | Default    |
+| ------------------- | ---------------- | ---------- |
+| list<Required />    | array of strings |            |
+| onClick<Required /> | function         |            |
+| label               | string           | `Dropdown` |
+
+## Example
+
+<iframe
+  src="https://codesandbox.io/embed/blog-v4-ub7ie?fontsize=14&hidenavigation=1&initialpath=%2Fdropdown&theme=dark&view=preview"
+  style={{
+    width: '100%',
+    height: 500,
+    border: 0,
+    borderRadius: 4,
+    overflow: 'hidden'
+  }}
+  title="Blog-v4"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>

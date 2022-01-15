@@ -28,11 +28,11 @@
     "body": [
       "interface State {}",
       "",
-      "const $1 = () => {",
-      "  return <>$1</>",
+      "const $1Page = () => {",
+      "  return <>$1Page</>",
       "}",
       "",
-      "export default $1"
+      "export default $1Page"
     ],
     "description": "page generator"
   },
