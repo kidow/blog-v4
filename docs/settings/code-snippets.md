@@ -1,4 +1,4 @@
-```json
+```json title="typescriptreact"
 {
   "console.log": {
     "prefix": "clg",

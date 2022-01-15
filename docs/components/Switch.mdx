@@ -1,0 +1,74 @@
+import { Required } from '@site/src/components'
+
+```tsx title="components/Switch/index.tsx"
+import type { FunctionComponent } from 'react'
+import classnames from 'classnames'
+
+export interface Props {
+  checked: boolean
+  onChange: (checked: boolean) => void
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const Switch: FunctionComponent<Props> = ({
+  checked,
+  onChange,
+  size = 'md'
+}) => {
+  return (
+    <label
+      className={classnames('relative inline-block', {
+        'w-7 h-4': size === 'sm',
+        'w-10 h-6': size === 'md',
+        'w-14 h-8': size === 'lg'
+      })}
+    >
+      <input type="checkbox" checked={checked} className="opacity-0 w-0 h-0" />
+      <span
+        onClick={() => onChange(!checked)}
+        className={classnames(
+          'absolute cursor-pointer inset-0 transition before:transition before:duration-300 duration-300 before:absolute before:content-[""] before:bg-white before:rounded-full',
+          checked ? 'bg-blue-600' : 'bg-gray-200',
+          {
+            'before:left-1 before:bottom-1 before:h-2 before:w-2 rounded-lg':
+              size === 'sm',
+            'before:translate-x-3': size === 'sm' && checked,
+            'before:left-1 before:bottom-1 before:h-4 before:w-4 rounded-xl':
+              size === 'md',
+            'before:translate-x-4': size === 'md' && checked,
+            'before:left-1.5 before:bottom-1 before:h-6 before:w-6 rounded-2xl':
+              size === 'lg',
+            'before:translate-x-5': size === 'lg' && checked
+          }
+        )}
+      />
+    </label>
+  )
+}
+
+export default Switch
+```
+
+## Props
+
+| Name                 | Type           | Default |
+| -------------------- | -------------- | ------- |
+| checked<Required />  | boolean        | false   |
+| onChange<Required /> | function       |         |
+| size                 | `sm` `md` `lg` | `md`    |
+
+## Example
+
+<iframe
+  src="https://codesandbox.io/embed/blog-v4-ub7ie?fontsize=14&hidenavigation=1&initialpath=%2Fswitch&theme=dark&view=preview"
+  style={{
+    width: '100%',
+    height: 500,
+    border: 0,
+    borderRadius: 4,
+    overflow: 'hidden'
+  }}
+  title="Blog-v4"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
