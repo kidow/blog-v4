@@ -1,7 +1,7 @@
 import { Required } from '@site/src/components'
 
 ```tsx title="components/Tooltip/index.tsx"
-import { FunctionComponent, useRef } from 'react'
+import { FC, useRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { useObject } from 'services'
 import classnames from 'classnames'
@@ -19,7 +19,7 @@ interface State {
   style?: CSSProperties
 }
 
-const Tooltip: FunctionComponent<Props> = ({
+const Tooltip: FC<Props> = ({
   content,
   children,
   border = false,

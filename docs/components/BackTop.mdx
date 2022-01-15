@@ -7,14 +7,14 @@ npm install @heroicons/react classnames
 ```
 
 ```tsx title="components/BackTop/index.tsx"
-import { FunctionComponent } from 'react'
+import { FC } from 'react'
 import classnames from 'classnames'
 import { ChevronUpIcon } from '@heroicons/react/outline'
 
 export interface Props {}
 interface State {}
 
-const BackTop: FunctionComponent<Props> = () => {
+const BackTop: FC<Props> = () => {
   return (
     <button
       className={classnames(

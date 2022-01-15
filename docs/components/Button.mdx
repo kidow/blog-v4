@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 
 ```tsx title="components/Button/index.tsx"
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import classnames from 'classnames'
 
 interface Props
@@ -21,7 +21,7 @@ interface Props
     | 'ghost'
 }
 
-const Button: FunctionComponent<Props> = ({
+const Button: FC<Props> = ({
   isLoading,
   size,
   theme,

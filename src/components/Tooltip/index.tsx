@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef } from 'react'
+import React, { FC, useRef } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { useObject } from '@site/src/services'
 import classnames from 'classnames'
@@ -16,7 +16,7 @@ interface State {
   style?: CSSProperties
 }
 
-const Tooltip: FunctionComponent<Props> = ({
+const Tooltip: FC<Props> = ({
   content,
   children,
   border = false,

@@ -1,7 +1,7 @@
 import { Required } from '@site/src/components'
 
 ```tsx title="components/Switch/index.tsx"
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import classnames from 'classnames'
 
 export interface Props {
@@ -10,11 +10,7 @@ export interface Props {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const Switch: FunctionComponent<Props> = ({
-  checked,
-  onChange,
-  size = 'md'
-}) => {
+const Switch: FC<Props> = ({ checked, onChange, size = 'md' }) => {
   return (
     <label
       className={classnames('relative inline-block', {

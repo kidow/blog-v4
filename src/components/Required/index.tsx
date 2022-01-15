@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 
 export interface Props {}
 interface State {}
 
-const Required: FunctionComponent<Props> = () => {
+const Required: FC<Props> = () => {
   return <span className="required">*</span>
 }
 

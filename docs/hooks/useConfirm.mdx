@@ -51,13 +51,13 @@ const useConfirm = () => {
 ```
 
 ```tsx title="containers/Modal/Confirm/index.tsx"
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import { Modal } from 'containers'
 import { useConfirm } from 'services'
 
 interface Props {}
 
-const ConfirmModal: FunctionComponent<Props> = () => {
+const ConfirmModal: FC<Props> = () => {
   const { onConfirm, onCancel, content, confirmState, resetConfirmState } =
     useConfirm()
   if (!confirmState.isOpen) return null
@@ -86,13 +86,13 @@ export default ConfirmModal
 ### Next.js
 
 ```tsx title="containers/Provider/Confirm/index.tsx"
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import { useConfirm } from 'services'
 import { ConfirmModal } from 'containers'
 
 interface Props {}
 
-const ConfirmProvider: FunctionComponent<Props> = ({ children }) => {
+const ConfirmProvider: FC<Props> = ({ children }) => {
   return (
     <>
       {children}

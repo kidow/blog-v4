@@ -3,7 +3,7 @@ It is a component for setting only seo.
 ## Next.js
 
 ```tsx title="components/SEO/index.tsx"
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -16,7 +16,7 @@ interface Props {
   keyword?: string
 }
 
-const SEO: FunctionComponent<Props> = ({
+const SEO: FC<Props> = ({
   title,
   description = "It's my blog.",
   image = '',

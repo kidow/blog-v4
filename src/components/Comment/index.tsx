@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 import useThemeContext from '@theme/hooks/useThemeContext'
 
 export interface Props {}
@@ -7,7 +7,7 @@ interface State {}
 
 const giscusSelector = 'iframe.giscus-frame'
 
-const Comment: FunctionComponent<Props> = () => {
+const Comment: FC<Props> = () => {
   const { isDarkTheme } = useThemeContext()
   const theme = isDarkTheme ? 'dark_dimmed' : 'light'
   const ref = useRef<HTMLDivElement>(null)

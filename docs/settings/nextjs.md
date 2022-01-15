@@ -85,14 +85,14 @@ export default class MyDocument extends Document {
 
 ```tsx title="pages/_error.tsx"
 import type { NextPageContext } from 'next'
-import type { FunctionComponent } from 'react'
+import type { FC } from 'react'
 
 interface Props {
   statusCode: number
 }
 interface State {}
 
-const ErrorPage: FunctionComponent<Props> = ({ statusCode }) => {
+const ErrorPage: FC<Props> = ({ statusCode }) => {
   return <>Not Found</>
 }
 

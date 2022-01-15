@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FC } from 'react'
 import { useObject } from '@site/src/services'
 import classnames from 'classnames'
 import { ChevronDownIcon } from '@heroicons/react/outline'
@@ -13,7 +13,7 @@ interface State {
   isOpen: boolean
 }
 
-const Collapse: FunctionComponent<Props> = ({
+const Collapse: FC<Props> = ({
   children,
   title,
   action,
