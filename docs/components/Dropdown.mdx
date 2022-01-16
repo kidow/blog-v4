@@ -17,8 +17,8 @@ interface State {
 
 const Dropdown: FC<Props> = ({ list, onClick, label = 'Dropdown' }) => {
   const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
-  const ref = useRef<HTMLButtonElement | null>(null)
-  useOnClickOutside(ref, () => setState({ isOpen: false }), 'dropdown')
+  const ref = useRef<HTMLButtonElement>(null)
+  useOnClickOutside(ref, () => setState({ isOpen: false }))
   return (
     <button
       className={classnames('relative text-sm font-medium', {
@@ -36,7 +36,7 @@ const Dropdown: FC<Props> = ({ list, onClick, label = 'Dropdown' }) => {
       </div>
       {isOpen && (
         <div
-          className="absolute top-10 bg-gray-200 rounded-md p-1 min-w-full text-left"
+          className="absolute top-10 bg-gray-200 z-10 rounded-md p-1 min-w-full text-left"
           role="none"
         >
           {list.map((item, key) => (

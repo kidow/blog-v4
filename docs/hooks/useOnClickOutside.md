@@ -1,0 +1,89 @@
+지정한 영역의 바깥 영역을 클릭할 시 함수를 실행할 수 있도록 하는 hooks입니다.
+
+```typescript title="services/hooks/index.tsx"
+import type { RefObject } from 'react'
+
+export function useOnClickOutside<T extends HTMLElement>(
+  ref: RefObject<T>,
+  handler: (event: MouseEvent | TouchEvent) => void
+): void {
+  const listener = (event: MouseEvent | TouchEvent) => {
+    const el = ref?.current
+    if (!el || el.contains(event.target as Node)) return
+    handler(event)
+  }
+  useEffect(() => {
+    document.addEventListener('mouseup', listener)
+    return () => {
+      document.removeEventListener('mouseup', listener)
+    }
+  }, [ref, handler])
+}
+```
+
+## Usage
+
+### Dropdown
+
+```tsx
+import { useRef } from 'react'
+import type { FC } from 'react'
+import { useObject, useOnClickOutside } from 'services'
+import classnames from 'classnames'
+
+export interface Props {
+  list: string[]
+  onClick: (value: string) => void
+  label?: string
+}
+interface State {
+  isOpen: boolean
+}
+
+const Dropdown: FC<Props> = ({ list, onClick, label = 'Dropdown' }) => {
+  const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
+  // highlight-start
+  const ref = useRef<HTMLButtonElement>(null)
+  useOnClickOutside(ref, () => setState({ isOpen: false }))
+  // highlight-end
+  return (
+    <button
+      className={classnames('relative text-sm font-medium', {
+        'bg-gray-200 rounded-md': isOpen
+      })}
+      ref={ref}
+    >
+      <div
+        className="inline-flex items-center px-4 py-2 hover:bg-gray-200 rounded-md after:content-[''] after:h-1.5 after:w-1.5 after:bg-transparent after:border-b after:border-r after:ml-2 after:border-gray-800 after:block after:rotate-45"
+        onClick={() => setState({ isOpen: !isOpen })}
+        aria-haspopup="true"
+        aria-expanded="true"
+      >
+        {label}
+      </div>
+      {isOpen && (
+        <div
+          className="absolute top-10 bg-gray-200 rounded-md p-1 min-w-full text-left"
+          role="none"
+        >
+          {list.map((item, key) => (
+            <div
+              onClick={() => {
+                onClick(item)
+                setState({ isOpen: false })
+              }}
+              className="hover:bg-gray-300 p-2 rounded-md"
+              role="menuitem"
+              tabIndex={-1}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
+    </button>
+  )
+}
+
+export default Dropdown
+```

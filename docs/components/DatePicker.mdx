@@ -1,0 +1,408 @@
+## 조건
+
+```bash
+npm install dayjs
+```
+
+```tsx title="components/DatePicker/index.tsx"
+import { FC, useMemo, useRef } from 'react'
+import classnames from 'classnames'
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from '@heroicons/react/outline'
+import {
+  ChevronDoubleLeftIcon,
+  ChevronDoubleRightIcon,
+  XCircleIcon
+} from '@heroicons/react/solid'
+import { useObject, useOnClickOutside } from 'services'
+import dayjs, { Dayjs } from 'dayjs'
+import isBetween from 'dayjs/plugin/isBetween'
+
+dayjs.extend(isBetween)
+
+type TMode = 'month' | 'year' | 'decade'
+
+interface Props {
+  value: string
+  onChange: (value: string) => void
+  format?: string
+  mode?: TMode
+}
+interface State {
+  isOpen: boolean
+  value: string
+  date: dayjs.Dayjs
+  stacks: TMode[]
+}
+
+const DatePicker: FC<Props> = ({
+  onChange,
+  format = 'YYYY.MM.DD',
+  mode,
+  ...props
+}) => {
+  const [{ isOpen, value, date, stacks }, setState, _, resetState] =
+    useObject<State>({
+      isOpen: false,
+      value: props.value || '',
+      date: dayjs(),
+      stacks: mode ? [mode] : []
+    })
+  const ref = useRef<HTMLDivElement>(null)
+  useOnClickOutside(ref, () => resetState(['isOpen', 'date', 'stacks']))
+
+  const onYearClick = () => {
+    switch (stacks[0]) {
+      case undefined:
+        setState({ stacks: ['year'] })
+        break
+      case 'year':
+        setState({ stacks: ['decade', ...stacks] })
+        break
+      case 'month':
+        setState({ stacks: ['decade', ...stacks] })
+        break
+    }
+  }
+
+  const decadeList: Dayjs[] = useMemo(() => {
+    const decade = Number(dayjs(date).format('YYYY'))
+    return Array.from({ length: 12 }, (_, i) =>
+      dayjs(date).add(
+        (decade > 2000 ? 0 : -1) -
+          Number(dayjs(date).format('YYYY')[0]) +
+          (i * 10 - 30),
+        'year'
+      )
+    )
+  }, [date])
+
+  const yearList: Dayjs[] = useMemo(() => {
+    const year = dayjs(date).format('YYYY')
+    return Array.from({ length: 12 }, (_, i) =>
+      dayjs(date).add(i - Number(year[3]) - 1, 'year')
+    )
+  }, [date])
+
+  const dayList: Dayjs[] = useMemo(() => {
+    const week = new Date(dayjs(date).format('YYYY-MM-01')).getDay()
+    return Array.from({ length: 42 }, (_, i) =>
+      i >= week
+        ? dayjs(dayjs(date).format(`YYYY-MM-${i - week + 1}`))
+        : dayjs(dayjs(date).format('YYYY-MM-01')).add(i - week, 'day')
+    )
+  }, [date])
+  return (
+    <div
+      className="inline-flex items-center rounded relative border border-gray-300 group hover:border-gray-600 z-10"
+      ref={ref}
+    >
+      <input
+        readOnly
+        className="border-none outline-none text-sm py-2 px-3 w-36 rounded"
+        placeholder={format}
+        value={value ? dayjs(value).format(format) : ''}
+        onClick={() => setState({ isOpen: true })}
+      />
+      {!!value && (
+        <XCircleIcon
+          onClick={() => setState({ value: '', isOpen: false })}
+          className="h-5 w-5 mr-2 text-gray-300 absolute right-10 cursor-pointer invisible group-hover:visible"
+        />
+      )}
+      <button
+        className="p-2 border-l border-gray-300 group-hover:border-gray-600"
+        onClick={() => setState({ isOpen: true })}
+      >
+        <CalendarIcon className="h-5 w-5 text-gray-300 group-hover:text-gray-600" />
+      </button>
+      {isOpen && (
+        <div
+          className={classnames(
+            'absolute top-10 select-none transition-opacity duration-300 rounded shadow-xl z-10 bg-white w-64',
+            {
+              'opacity-0': !isOpen
+            }
+          )}
+        >
+          <div className="flex items-center px-2 justify-between rounded-t border-b border-gray-300">
+            <div className="flex gap-2">
+              <button
+                className="py-3"
+                onClick={() =>
+                  setState({
+                    date: dayjs(date).add(
+                      stacks[0] === 'decade'
+                        ? -100
+                        : stacks[0] === 'year'
+                        ? -10
+                        : -1,
+                      'year'
+                    )
+                  })
+                }
+              >
+                <ChevronDoubleLeftIcon className="h-4 w-4 cursor-pointer text-gray-400 hover:text-gray-800" />
+              </button>
+              {!stacks[0] && (
+                <button
+                  className="py-3"
+                  onClick={() =>
+                    setState({ date: dayjs(date).add(-1, 'month') })
+                  }
+                >
+                  <ChevronLeftIcon className="h-4 w-4 cursor-pointer text-gray-400 hover:text-gray-800" />
+                </button>
+              )}
+            </div>
+
+            <div className="font-semibold flex gap-1">
+              <span
+                className="hover:text-blue-500 cursor-pointer"
+                onClick={onYearClick}
+              >
+                {stacks[0] === 'decade'
+                  ? `${dayjs(date)
+                      .add(
+                        -Number(dayjs(date).format('YYYY').slice(-2)),
+                        'year'
+                      )
+                      .format('YYYY')}-${dayjs(date)
+                      .add(
+                        99 - Number(dayjs(date).format('YYYY').slice(-2)),
+                        'year'
+                      )
+                      .format('YYYY')}`
+                  : stacks[0] === 'year'
+                  ? `${dayjs(date)
+                      .add(-Number(dayjs(date).format('YYYY')[0]), 'year')
+                      .format('YYYY')}-${dayjs(date)
+                      .add(10 - Number(dayjs(date).format('YYYY')[0]), 'year')
+                      .format('YYYY')}`
+                  : dayjs(date).format('YYYY')}
+              </span>
+              {!stacks[0] && (
+                <span
+                  className="hover:text-blue-500 cursor-pointer"
+                  onClick={() =>
+                    setState({
+                      stacks: ['month', ...stacks]
+                    })
+                  }
+                >
+                  {dayjs(date).format('MM')}
+                </span>
+              )}
+            </div>
+
+            <div className="flex gap-2">
+              {!stacks[0] && (
+                <button
+                  className="py-3"
+                  onClick={() =>
+                    setState({ date: dayjs(date).add(1, 'month') })
+                  }
+                >
+                  <ChevronRightIcon className="h-4 w-4 cursor-pointer text-gray-400 hover:text-gray-800" />
+                </button>
+              )}
+              <button
+                className="py-3"
+                onClick={() =>
+                  setState({
+                    date: dayjs(date).add(
+                      stacks[0] === 'decade'
+                        ? 100
+                        : stacks[0] === 'year'
+                        ? 10
+                        : 1,
+                      'year'
+                    )
+                  })
+                }
+              >
+                <ChevronDoubleRightIcon className="h-4 w-4 cursor-pointer text-gray-400 hover:text-gray-800" />
+              </button>
+            </div>
+          </div>
+
+          {!stacks[0] && (
+            <>
+              <div className="grid grid-cols-7 gap-3 p-2 text-center">
+                {['일', '월', '화', '수', '목', '금', '토'].map((week, key) => (
+                  <div key={key}>{week}</div>
+                ))}
+                {dayList.map((day, key) => (
+                  <div
+                    key={key}
+                    onClick={() => {
+                      setState({
+                        value: dayjs(day).format(format),
+                        isOpen: false
+                      })
+                      onChange(dayjs(day).format(format))
+                    }}
+                    className={classnames(
+                      'rounded w-6 h-6 flex items-center justify-center cursor-pointer',
+                      !!value && dayjs(value).isSame(dayjs(day))
+                        ? 'bg-blue-500 text-white'
+                        : 'hover:bg-gray-200',
+                      {
+                        'text-gray-400':
+                          dayjs(day).format('MM') !== dayjs(date).format('MM'),
+                        'border rounded border-blue-500':
+                          dayjs(day).format('YYYY-MM-DD') ===
+                          dayjs().format('YYYY-MM-DD')
+                      }
+                    )}
+                  >
+                    {dayjs(day).format('D')}
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center justify-center border-t border-gray-300 text-sm h-10 text-gray-400">
+                <button
+                  className="hover:text-blue-400"
+                  onClick={() => {
+                    setState({
+                      value: dayjs().format(format),
+                      isOpen: false
+                    })
+                    onChange(dayjs().format(format))
+                  }}
+                >
+                  오늘
+                </button>
+              </div>
+            </>
+          )}
+
+          {stacks[0] === 'year' && (
+            <div className="grid grid-cols-3 gap-4 px-2 py-4">
+              {yearList.map((item, key) => (
+                <div
+                  key={key}
+                  className={classnames(
+                    'cursor-pointer rounded h-6 text-sm flex items-center justify-center',
+                    !!value &&
+                      dayjs(value).format('YYYY') === dayjs(item).format('YYYY')
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-200 first:text-gray-400 last:text-gray-400'
+                  )}
+                  onClick={() =>
+                    setState({
+                      stacks: stacks.slice(1),
+                      ...(stacks.length === 1 ? { date: dayjs(item) } : {})
+                    })
+                  }
+                >
+                  {dayjs(item).format('YYYY')}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {stacks[0] === 'month' && (
+            <div className="grid grid-cols-3 gap-4 px-2 py-4">
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((item, key) => (
+                <div
+                  key={key}
+                  className={classnames(
+                    'cursor-pointer rounded h-6 text-sm flex items-center justify-center',
+                    !!value && dayjs(value).format('M') === String(key + 1)
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-200'
+                  )}
+                  onClick={() =>
+                    setState({
+                      date: dayjs(dayjs(date).format(`YYYY-${key + 1}-DD`)),
+                      stacks: stacks.slice(1)
+                    })
+                  }
+                >
+                  {item}월
+                </div>
+              ))}
+            </div>
+          )}
+
+          {stacks[0] === 'decade' && (
+            <div className="grid grid-cols-3 gap-4 px-2 py-4">
+              {decadeList.map((item, key) => (
+                <div
+                  key={key}
+                  className={classnames(
+                    'cursor-pointer rounded h-6 text-sm flex items-center justify-center',
+                    !!value &&
+                      dayjs(value).isBetween(
+                        dayjs(date).add(
+                          -Number(dayjs(date).format('YYYY')[0]) +
+                            (key * 10 - 30),
+                          'year'
+                        ),
+                        dayjs(date).add(
+                          10 -
+                            Number(dayjs(date).format('YYYY')[0]) +
+                            (key * 10 - 30) -
+                            1,
+                          'year'
+                        )
+                      )
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-200 first:text-gray-400 last:text-gray-400'
+                  )}
+                  onClick={() =>
+                    setState({
+                      stacks: stacks.slice(1),
+                      date: dayjs(date).add(
+                        Number(dayjs(date).format('YYYY')[3]) +
+                          -Number(dayjs(date).format('YYYY')[3]) +
+                          (key * 10 - 30),
+                        'year'
+                      )
+                    })
+                  }
+                >
+                  {dayjs(item).format('YYYY')}-
+                  {dayjs(item).add(9, 'year').format('YYYY')}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default DatePicker
+```
+
+## Props
+
+| Name                 | Type                    | Default      |
+| -------------------- | ----------------------- | ------------ |
+| value<Required />    | string                  |              |
+| onChange<Required /> | function                |              |
+| format               | string                  | `YYYY.MM.DD` |
+| mode                 | `month` `year` `decade` |              |
+
+## Example
+
+<iframe
+  src="https://codesandbox.io/embed/blog-v4-ub7ie?fontsize=14&hidenavigation=1&initialpath=%2Fdatepicker&theme=dark&view=preview"
+  style={{
+    width: '100%',
+    height: 500,
+    border: 0,
+    borderRadius: 4,
+    overflow: 'hidden'
+  }}
+  title="Blog-v4"
+  allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+  sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+></iframe>
