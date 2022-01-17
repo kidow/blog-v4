@@ -4,6 +4,14 @@ import { Required, Codesandbox } from '@site/src/components'
 
 - [`Input`](/docs/components/Input) component
 
+```css title="css"
+input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+```
+
+## Code
+
 ```tsx title="components/AutoComplete/index.tsx"
 import type { FC, OptionHTMLAttributes, ComponentProps } from 'react'
 import { Input } from 'components'
