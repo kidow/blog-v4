@@ -1,10 +1,4 @@
-import classnames from 'classnames'
-import { ChevronUpIcon } from '@heroicons/react/outline'
-import useThemeContext from '@theme/hooks/useThemeContext'
-
-```bash
-npm install @heroicons/react classnames
-```
+import { BackTop } from '@site/src/components'
 
 ```tsx title="components/BackTop/index.tsx"
 import { FC } from 'react'
@@ -29,23 +23,6 @@ const BackTop: FC<Props> = () => {
 
 export default BackTop
 ```
-
-export const BackTop = () => {
-  const { isDarkTheme } = useThemeContext()
-  return (
-    <button
-      class={classnames(
-        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center rounded-full',
-        isDarkTheme ? 'bg-white' : 'bg-black'
-      )}
-      onClick={() => window.scrollTo(0, 0)}
-    >
-      <ChevronUpIcon
-        class={classnames('h-7 w-7', isDarkTheme ? 'text-black' : 'text-white')}
-      />
-    </button>
-  )
-}
 
 > _화면 오른쪽 하단 참고!_
 
