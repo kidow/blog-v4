@@ -1,24 +1,19 @@
-import React from 'react'
+import React, { FC } from 'react'
 import classnames from 'classnames'
 import { ChevronUpIcon } from '@heroicons/react/outline'
-import useThemeContext from '@theme/hooks/useThemeContext'
 
-const BackTop = () => {
-  const { isDarkTheme } = useThemeContext()
+export interface Props {}
+interface State {}
+
+const BackTop: FC<Props> = () => {
   return (
     <button
       className={classnames(
-        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center rounded-full',
-        isDarkTheme ? 'bg-white' : 'bg-black'
+        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center bg-black rounded-full'
       )}
       onClick={() => window.scrollTo(0, 0)}
     >
-      <ChevronUpIcon
-        className={classnames(
-          'h-7 w-7',
-          isDarkTheme ? 'text-black' : 'text-white'
-        )}
-      />
+      <ChevronUpIcon className="h-7 w-7 text-white" />
     </button>
   )
 }
