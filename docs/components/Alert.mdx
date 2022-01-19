@@ -1,0 +1,109 @@
+import { Required, Codesandbox } from '@site/src/components'
+
+## Code
+
+```tsx title="components/Alert/index.tsx"
+import type { FC, ReactNode } from 'react'
+import classnames from 'classnames'
+import {
+  CheckCircleIcon as OutlineCheckCircleIcon,
+  InformationCircleIcon as OutlineInformationCircleIcon,
+  ExclamationCircleIcon as OutlineExclamationCircleIcon,
+  XCircleIcon as OutlineXCircleIcon
+} from '@heroicons/react/outline'
+import {
+  CheckCircleIcon as SolidCheckCircleIcon,
+  InformationCircleIcon as SolidInformationCircleIcon,
+  ExclamationCircleIcon as SolidExclamationCircleIcon,
+  XCircleIcon as SolidXCircleIcon
+} from '@heroicons/react/solid'
+
+export interface Props {
+  type: 'success' | 'info' | 'warn' | 'error'
+  title: string
+  description?: ReactNode
+  icon?: boolean
+}
+
+const Alert: FC<Props> = ({
+  type = 'error',
+  title,
+  description,
+  icon = true
+}) => {
+  return (
+    <div
+      className={classnames(
+        'border rounded flex',
+        description ? 'p-4 gap-4' : 'py-2 px-4 gap-2 items-center',
+        {
+          'border-green-600 bg-emerald-100': type === 'success',
+          'border-blue-600 bg-sky-100': type === 'info',
+          'border-yellow-600 bg-amber-100': type === 'warn',
+          'border-rose-600 bg-red-100': type === 'error'
+        }
+      )}
+    >
+      {icon && (
+        <>
+          {type === 'success' && (
+            <>
+              {description ? (
+                <OutlineCheckCircleIcon className="h-6 w-6 text-emerald-600" />
+              ) : (
+                <SolidCheckCircleIcon className="h-4 w-4 text-emerald-600" />
+              )}
+            </>
+          )}
+          {type === 'info' && (
+            <>
+              {description ? (
+                <OutlineInformationCircleIcon className="h-6 w-6 text-sky-600" />
+              ) : (
+                <SolidInformationCircleIcon className="h-4 w-4 text-sky-600" />
+              )}
+            </>
+          )}
+          {type === 'warn' && (
+            <>
+              {description ? (
+                <OutlineExclamationCircleIcon className="h-6 w-6 text-amber-600" />
+              ) : (
+                <SolidExclamationCircleIcon className="h-4 w-4 text-amber-600" />
+              )}
+            </>
+          )}
+          {type === 'error' && (
+            <>
+              {description ? (
+                <OutlineXCircleIcon className="h-6 w-6 text-rose-600" />
+              ) : (
+                <SolidXCircleIcon className="h-4 w-4 text-rose-600" />
+              )}
+            </>
+          )}
+        </>
+      )}
+      <div>
+        <div className={classnames({ 'text-sm': !description })}>{title}</div>
+        {!!description && <div className="text-sm mt-1">{description}</div>}
+      </div>
+    </div>
+  )
+}
+
+export default Alert
+```
+
+## Props
+
+| Name              | Type                            | Default |
+| ----------------- | ------------------------------- | ------- |
+| type<Required />  | `success` `info` `warn` `error` |         |
+| title<Required /> | string                          |         |
+| description       | string                          |         |
+| icon              | boolean                         | true    |
+
+## Example
+
+<Codesandbox name="alert" />
