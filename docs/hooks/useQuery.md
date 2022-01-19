@@ -1,4 +1,4 @@
-```bash
+```bash npm2yarn
 npm install query-string
 ```
 
