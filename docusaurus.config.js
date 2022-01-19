@@ -37,7 +37,10 @@ const config = {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/main/website/blog/'
+            'https://github.com/facebook/docusaurus/edit/main/website/blog/',
+          remarkPlugins: [
+            [require('@docusaurus/remark-plugin-npm2yarn'), { sync: true }]
+          ]
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css')
