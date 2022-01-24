@@ -3,8 +3,8 @@ import { Required, Codesandbox } from '@site/src/components'
 ## Code
 
 ```tsx title="components/Tooltip/index.tsx"
-import { FC, useRef } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
+import { useRef } from 'react'
+import type { FC, CSSProperties, ReactNode } from 'react'
 import { useObject } from 'services'
 import classnames from 'classnames'
 
@@ -99,16 +99,16 @@ const Tooltip: FC<Props> = ({
             'after:border-r-black':
               arrow && theme === 'dark' && position === 'right',
 
-            'after:bottom-full after:border-b-black after:border-t-transparent':
+            'after:bottom-full after:border-t-transparent':
               arrow && position === 'bottom',
-            'after:top-full after:border-t-black after:border-b-transparent':
+            'after:top-full after:border-b-transparent':
               arrow && position === 'top',
             'after:-ml-2 after:left-1/2 after:border-x-transparent':
               arrow && (position === 'top' || position === 'bottom'),
 
-            'after:left-full after:border-l-black after:border-r-transparent':
+            'after:left-full after:border-r-transparent':
               arrow && position === 'left',
-            'after:right-full after:border-r-black after:border-l-transparent':
+            'after:right-full after:border-l-transparent':
               arrow && position === 'right',
             'after:-mt-2 after:top-1/2 after:border-y-transparent':
               arrow && (position === 'left' || position === 'right'),

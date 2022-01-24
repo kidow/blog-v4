@@ -6,7 +6,7 @@ sidebar_position: 1
 
 제 블로그는 다음과 같은 내용들을 포함하고 있습니다.
 
-- [`Components`](/docs/components/Accordion) : _직접 만들어 쓰는 리액트 컴포넌트들_
+- [`Components`](/docs/components/Alert) : _직접 만들어 쓰는 리액트 컴포넌트들_
 - [`Hooks`](/docs/hooks/useComponentDidUpdate) : _직접 만들어 쓰는 리액트 훅스 모음_
 - [`Utils`](/docs/utils/base64ToFile) : 자주 쓰는 Typescript 함수 모음
 - [`Projects`](/docs/projects/Dynamisign) : _그동안 만든 프로젝트들_
