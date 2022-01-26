@@ -10,6 +10,7 @@ module.exports = {
     './src/**/*.html',
     './src/**/*.js',
     './src/**/*.tsx',
+    './src/**/*.mdx',
     './docs/**/*.mdx'
   ],
   theme: {
