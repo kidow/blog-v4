@@ -1,4 +1,5 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { RefObject, ChangeEvent } from 'react'
 
 export function useObject<T>(
   initialObject: T
@@ -51,4 +52,27 @@ export function useObject<T>(
   }, [state])
 
   return [state, onChange, onEventChange, resetState]
+}
+
+export function useOnClickOutside<T extends HTMLElement>(
+  ref: RefObject<T>,
+  handler: (event: MouseEvent | TouchEvent) => void,
+  elementId?: string
+): void {
+  const listener = (event: MouseEvent | TouchEvent) => {
+    const el = ref?.current
+    if (
+      !el ||
+      el.contains(event.target as Node) ||
+      elementId === (event.target as HTMLElement).id
+    )
+      return
+    handler(event)
+  }
+  useEffect(() => {
+    document.addEventListener('mouseup', listener)
+    return () => {
+      document.removeEventListener('mouseup', listener)
+    }
+  }, [ref, handler])
 }
