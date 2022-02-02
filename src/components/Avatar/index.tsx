@@ -1,8 +1,4 @@
-import { Required, Codesandbox, Avatar } from '@site/src/components'
-
-## Code
-
-```tsx title="components/Avatar/index.tsx"
+import React from 'react'
 import type { FC } from 'react'
 import classnames from 'classnames'
 import { UserCircleIcon } from '@heroicons/react/solid'
@@ -57,10 +53,3 @@ const Avatar: FC<Props> = ({
 }
 
 export default Avatar
-```
-
-## Props
-
-## Example
-
-<Codesandbox name="avatar" />

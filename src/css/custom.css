@@ -60,6 +60,9 @@ button {
   .react-table-row-group > div > div {
     @apply table-cell px-6 py-4 align-top;
   }
+  .masonry > * {
+    @apply w-full mb-2;
+  }
 }
 
 .header-github-link::before {
