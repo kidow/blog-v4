@@ -1,4 +1,5 @@
 import { Required, Codesandbox, Avatar } from '@site/src/components'
+import { useObject } from '@site/src/services'
 
 ## Code
 
@@ -21,7 +22,7 @@ const Avatar: FC<Props> = ({
   alt,
   shape = 'circle',
   size = 'md',
-  border,
+  border = false,
   className
 }) => {
   return (
@@ -61,6 +62,41 @@ export default Avatar
 
 ## Props
 
-## Example
+| Name            | Type                     | Default  |
+| --------------- | ------------------------ | -------- |
+| src<Required /> | string                   |          |
+| alt             | string                   |          |
+| shape           | `circle` `square`        | `circle` |
+| size            | `xs` `sm` `md` `lg` `xl` | `md`     |
+| border          | boolean                  | false    |
 
-<Codesandbox name="avatar" />
+### Src
+
+<div class="arrange">
+  <Avatar src="https://i.pravatar.cc" />
+  <Avatar />
+</div>
+
+### Shape
+
+<div class="arrange">
+  <Avatar src="https://i.pravatar.cc" shape="circle" />
+  <Avatar src="https://i.pravatar.cc" shape="shape" />
+</div>
+
+### Size
+
+<div class="arrange">
+  <Avatar src="https://i.pravatar.cc" size="xs" />
+  <Avatar src="https://i.pravatar.cc" size="sm" />
+  <Avatar src="https://i.pravatar.cc" size="md" />
+  <Avatar src="https://i.pravatar.cc" size="lg" />
+  <Avatar src="https://i.pravatar.cc" size="xl" />
+</div>
+
+### Border
+
+<div class="arrange">
+  <Avatar src="https://i.pravatar.cc" border />
+  <Avatar src="https://i.pravatar.cc" />
+</div>

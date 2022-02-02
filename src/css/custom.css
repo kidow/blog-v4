@@ -45,11 +45,8 @@ button {
 }
 
 @layer components {
-  .arrange {
-    @apply inline-flex flex-wrap gap-2 items-start;
-  }
   .required {
-    @apply text-red-500;
+    @apply text-red-500 select-none;
   }
   .header-github-link {
     @apply hover:opacity-60;

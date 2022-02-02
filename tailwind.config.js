@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @typedef { import('tailwindcss/defaultConfig') } DefaultConfig */
 /** @typedef { import('tailwindcss/defaultTheme') } DefaultTheme */
 
@@ -16,5 +18,19 @@ module.exports = {
   theme: {
     extend: {}
   },
-  plugins: []
+  plugins: [
+    plugin(function ({ addComponents, theme }) {
+      addComponents({
+        '.break-keep': {
+          wordBreak: 'keep-all'
+        },
+        '.arrange': {
+          display: 'inline-flex',
+          flexWrap: 'wrap',
+          gap: theme('spacing.2'),
+          alignItems: 'flex-start'
+        }
+      })
+    })
+  ]
 }

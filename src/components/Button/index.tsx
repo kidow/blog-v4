@@ -1,11 +1,6 @@
 import classnames from 'classnames'
-import { Button } from '@site/src/components'
-
-## Code
-
-```tsx title="components/Button/index.tsx"
-import classnames from 'classnames'
 import { Spinner } from '@site/src/components'
+import React from 'react'
 import type { FC, DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
 
 export interface Props
@@ -57,56 +52,3 @@ const Button: FC<Props> = ({
 }
 
 export default Button
-```
-
-## Props
-
-| Name      | Type                                                            | Default |
-| --------- | --------------------------------------------------------------- | ------- |
-| size      | `xs` `sm` `md` `lg` `xl`                                        | `md`    |
-| isLoading | boolean                                                         | false   |
-| theme     | `dark` `light` `primary` `secondary` `success` `danger` `ghost` | `dark`  |
-
-### Theme
-
-<div class="arrange">
-  <Button>dark</Button>
-  <Button theme="light">light</Button>
-  <Button theme="primary">primary</Button>
-  <Button theme="secondary">secondary</Button>
-  <Button theme="success">success</Button>
-  <Button theme="danger">danger</Button>
-  <Button theme="ghost">ghost</Button>
-</div>
-
-### Size
-
-<div class="arrange">
-  <Button size="xl">xl</Button>
-  <Button size="lg">lg</Button>
-  <Button>md</Button>
-  <Button size="sm">sm</Button>
-  <Button size="xs">xs</Button>
-</div>
-
-### Loading
-
-<div class="arrange">
-  <Button isLoading size="xl">
-    Loading
-  </Button>
-  <Button isLoading size="lg">
-    Loading
-  </Button>
-  <Button isLoading>Loading</Button>
-  <Button isLoading size="sm">
-    Loading
-  </Button>
-  <Button isLoading size="xs">
-    Loading
-  </Button>
-</div>
-
-### Disabled
-
-<Button disabled>disabled</Button>
