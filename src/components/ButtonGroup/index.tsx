@@ -1,8 +1,4 @@
-import { Required, ButtonGroup } from '@site/src/components'
-
-## Code
-
-```tsx title="components/ButtonGroup/index.tsx"
+import React from 'react'
 import type { FC } from 'react'
 
 export interface Props {
@@ -27,18 +23,3 @@ const ButtonGroup: FC<Props> = ({ list, onClick }) => {
 }
 
 export default ButtonGroup
-```
-
-## Props
-
-| Name                | Type             | Default |
-| ------------------- | ---------------- | ------- |
-| list<Required />    | Array of strings |         |
-| onClick<Required /> | function         |         |
-
-## Example
-
-<ButtonGroup
-  list={['Item 1', 'Item 2', 'Item 3']}
-  onClick={(item) => console.log(item)}
-/>

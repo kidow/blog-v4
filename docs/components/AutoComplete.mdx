@@ -1,10 +1,11 @@
-import { Required, Codesandbox } from '@site/src/components'
+import { Required, Autocomplete } from '@site/src/components'
 
-## 조건
+## Prerequisite
 
 - [`Input`](/docs/components/Input) component
+- [`getRandomString`](/docs/utils/getRandomString)
 
-```css title="css"
+```css title="root css"
 input::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
@@ -12,20 +13,22 @@ input::-webkit-calendar-picker-indicator {
 
 ## Code
 
-```tsx title="components/AutoComplete/index.tsx"
+```tsx title="components/Autocomplete/index.tsx"
 import type { FC, OptionHTMLAttributes, ComponentProps } from 'react'
 import { Input } from 'components'
+import { getRandomString } from 'services'
 
 interface Props extends ComponentProps<typeof Input> {
-  id: string
+  id?: string
   options: Array<OptionHTMLAttributes<HTMLOptionElement>['value']>
 }
 
-const AutoComplete: FC<Props> = ({ id, options, ...props }) => {
+const Autocomplete: FC<Props> = ({ options, ...props }) => {
+  const id = getRandomString()
   return (
     <>
-      <Input {...props} list={id} />
-      <datalist id={id}>
+      <Input {...props} list={props.id || id} />
+      <datalist id={props.id || id}>
         {options.map((value, key) => (
           <option value={value} key={key} />
         ))}
@@ -34,7 +37,7 @@ const AutoComplete: FC<Props> = ({ id, options, ...props }) => {
   )
 }
 
-export default AutoComplete
+export default Autocomplete
 ```
 
 ## Props
@@ -46,4 +49,19 @@ export default AutoComplete
 
 ## Example
 
-<Codesandbox name="autocomplete" />
+<Autocomplete
+  name="value"
+  options={[
+    'Apple',
+    'Google',
+    'Meta',
+    'Amazon',
+    'Microsoft',
+    'Netflix',
+    'Tesla'
+  ]}
+/>
+
+## References
+
+[https://developer.mozilla.org/ko/docs/Web/HTML/Element/datalist](https://developer.mozilla.org/ko/docs/Web/HTML/Element/datalist)

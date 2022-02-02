@@ -1,5 +1,10 @@
-import { Required, Codesandbox, Avatar } from '@site/src/components'
-import { useObject } from '@site/src/services'
+import { Avatar } from '@site/src/components'
+
+## Prerequisite
+
+```bash npm2yarn
+npm install classnames @heroicons/react
+```
 
 ## Code
 
@@ -62,13 +67,13 @@ export default Avatar
 
 ## Props
 
-| Name            | Type                     | Default  |
-| --------------- | ------------------------ | -------- |
-| src<Required /> | string                   |          |
-| alt             | string                   |          |
-| shape           | `circle` `square`        | `circle` |
-| size            | `xs` `sm` `md` `lg` `xl` | `md`     |
-| border          | boolean                  | false    |
+| Name   | Type                     | Default  |
+| ------ | ------------------------ | -------- |
+| src    | string                   |          |
+| alt    | string                   |          |
+| shape  | `circle` `square`        | `circle` |
+| size   | `xs` `sm` `md` `lg` `xl` | `md`     |
+| border | boolean                  | false    |
 
 ### Src
 
