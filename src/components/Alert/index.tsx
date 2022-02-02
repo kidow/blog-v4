@@ -1,17 +1,4 @@
-import { Required, Alert } from '@site/src/components'
-
-## 조건
-
-- [`useObject`](/docs/hooks/useObject) hooks
-
-```bash npm2yarn
-npm install @heroicons/react classnames
-```
-
-## Code
-
-```tsx title="components/Alert/index.tsx"
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import type { FC, ReactNode } from 'react'
 import classnames from 'classnames'
 import {
@@ -139,45 +126,3 @@ const Alert: FC<Props> = ({
 }
 
 export default Alert
-```
-
-## Props
-
-| Name              | Type                            | Default |
-| ----------------- | ------------------------------- | ------- |
-| type<Required />  | `success` `info` `warn` `error` |         |
-| title<Required /> | string                          |         |
-| description       | string                          |         |
-| icon              | boolean                         | true    |
-| close             | boolean                         | false   |
-
-### type
-
-<div class="arrange">
-  <Alert type="success" title="Success" />
-  <Alert type="info" title="Info" />
-  <Alert type="warn" title="Warn" />
-  <Alert type="error" title="Error" />
-</div>
-
-### description
-
-<div class="arrange">
-  <Alert type="success" title="Success" description="description" />
-  <Alert type="info" title="Info" description="description" />
-  <Alert type="warn" title="Warn" description="description" />
-  <Alert type="error" title="Error" description="description" />
-</div>
-
-### icon
-
-<div class="arrange">
-  <Alert type="success" title="icon" />
-  <Alert type="success" title="No icon" icon={false} />
-</div>
-
-### close
-
-<div class="arrange">
-  <Alert type="success" title="Close" close />
-</div>

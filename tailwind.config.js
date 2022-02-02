@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+const colors = require('tailwindcss/colors')
 
 /** @typedef { import('tailwindcss/defaultConfig') } DefaultConfig */
 /** @typedef { import('tailwindcss/defaultTheme') } DefaultTheme */
@@ -16,7 +17,20 @@ module.exports = {
     './docs/**/*.mdx'
   ],
   theme: {
-    extend: {}
+    extend: {
+      colors: {
+        emerald: colors.green,
+        amber: colors.yellow,
+        violet: colors.purple,
+        sky: {
+          100: '#e0f2fe',
+          600: '#0284c7'
+        },
+        rose: {
+          600: '#e11d48'
+        }
+      }
+    }
   },
   plugins: [
     plugin(function ({ addComponents, theme }) {
@@ -25,6 +39,7 @@ module.exports = {
           wordBreak: 'keep-all'
         },
         '.arrange': {
+          width: '100%',
           display: 'inline-flex',
           flexWrap: 'wrap',
           gap: theme('spacing.2'),
