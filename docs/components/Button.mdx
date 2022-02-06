@@ -1,11 +1,14 @@
-import classnames from 'classnames'
-import { Button } from '@site/src/components'
+import { Codesandbox } from '@site/src/components'
+
+## Prerequisite
+
+- [`Spinner`](/docs/components/Spinner) component
 
 ## Code
 
 ```tsx title="components/Button/index.tsx"
 import classnames from 'classnames'
-import { Spinner } from '@site/src/components'
+import { Spinner } from 'components'
 import type { FC, DetailedHTMLProps, ButtonHTMLAttributes } from 'react'
 
 export interface Props
@@ -13,44 +16,57 @@ export interface Props
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
-  isLoading?: boolean
+  loading?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg'
-  theme?: 'light' | 'dark' | 'secondary' | 'danger' | 'primary' | 'ghost'
+  theme?: 'danger' | 'primary'
+  shape?: 'text' | 'contained' | 'outlined'
 }
 
 const Button: FC<Props> = ({
-  isLoading = false,
+  loading = false,
   size = 'md',
-  theme = 'dark',
+  theme,
   children,
   disabled,
   className,
+  shape = 'outlined',
   ...props
 }) => {
   return (
     <button
       {...props}
       className={classnames(
-        'border leading-6 font-medium transition ease-in-out duration-150',
+        'leading-6 font-medium transition ease-in-out duration-150',
+        !loading && !disabled
+          ? 'hover:brightness-105 active:brightness-90'
+          : 'cursor-not-allowed brightness-75',
         {
-          'cursor-not-allowed': isLoading || disabled,
-          'inline-flex items-center justify-center': isLoading,
+          'inline-flex items-center justify-center': loading,
           'text-xs py-px px-2 rounded': size === 'xs',
           'text-sm py-1 px-3': size === 'sm',
           'text-base py-2 px-4': size === 'md',
           'text-lg py-3 px-5': size === 'lg',
-          'bg-black text-white': theme === 'dark',
-          'bg-gray-300 text-gray-600': theme === 'secondary',
-          'bg-red-600 text-white': theme === 'danger',
-          'bg-blue-500 text-white': theme === 'primary',
-          'bg-transparent border-gray-900': theme === 'ghost',
+          'bg-gray-900 text-white': shape === 'contained',
+          'bg-red-600 text-white': theme === 'danger' && shape === 'contained',
+          'bg-blue-500 text-white':
+            theme === 'primary' && shape === 'contained',
+          'bg-transparent hover:bg-gray-200': shape === 'text',
+          'text-red-600': theme === 'danger' && shape === 'text',
+          'text-blue-500': theme === 'primary' && shape === 'text',
+          border: shape === 'outlined',
+          'border-gray-900': !theme && shape === 'outlined',
+          'border-blue-500 text-blue-500':
+            theme === 'primary' && shape === 'outlined',
+          'border-red-500 text-red-500':
+            theme === 'danger' && shape === 'outlined',
+
           'rounded-md': size !== 'xs'
         },
         className
       )}
-      disabled={isLoading || disabled}
+      disabled={loading || disabled}
     >
-      {isLoading && <Spinner />}
+      {loading && <Spinner />}
       {children}
     </button>
   )
@@ -67,46 +83,6 @@ export default Button
 | isLoading | boolean                                                         | false   |
 | theme     | `dark` `light` `primary` `secondary` `success` `danger` `ghost` | `dark`  |
 
-### Theme
+## Example
 
-<div class="arrange">
-  <Button>dark</Button>
-  <Button theme="light">light</Button>
-  <Button theme="primary">primary</Button>
-  <Button theme="secondary">secondary</Button>
-  <Button theme="success">success</Button>
-  <Button theme="danger">danger</Button>
-  <Button theme="ghost">ghost</Button>
-</div>
-
-### Size
-
-<div class="arrange">
-  <Button size="xl">xl</Button>
-  <Button size="lg">lg</Button>
-  <Button>md</Button>
-  <Button size="sm">sm</Button>
-  <Button size="xs">xs</Button>
-</div>
-
-### Loading
-
-<div class="arrange">
-  <Button isLoading size="xl">
-    Loading
-  </Button>
-  <Button isLoading size="lg">
-    Loading
-  </Button>
-  <Button isLoading>Loading</Button>
-  <Button isLoading size="sm">
-    Loading
-  </Button>
-  <Button isLoading size="xs">
-    Loading
-  </Button>
-</div>
-
-### Disabled
-
-<Button disabled>disabled</Button>
+<Codesandbox name="button" />

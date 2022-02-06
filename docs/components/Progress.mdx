@@ -2,12 +2,65 @@ import { Required, Codesandbox } from '@site/src/components'
 
 ## Code
 
-```tsx title="components/Progress/index.tsx"
+```javascript title="tailwind.config.js"
+module.exports = {
+  theme: {
+    extend: {
+      keyframes: {
+        slide: {
+          '0%': {
+            backgroundPosition: '0 0'
+          },
+          '100%': {
+            backgroundPosition: '60px 0'
+          }
+        }
+      },
+      animation: {
+        slide: 'slide 2s linear infinite'
+      }
+    }
+  }
+}
+```
 
+```tsx title="components/Progress/index.tsx"
+import type { FC } from 'react'
+import classnames from 'classnames'
+
+interface Props {
+  value: number
+}
+
+const Progress: FC<Props> = ({ value }) => {
+  return (
+    <div className="border rounded-full h-3">
+      <div
+        className="h-full bg-sky-400 rounded-full animate-slide"
+        style={{
+          backgroundSize: '30px 30px',
+          backgroundImage:
+            'linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)',
+          width: `${value > 100 ? 100 : value}%`
+        }}
+      />
+    </div>
+  )
+}
+
+export default Progress
 ```
 
 ## Props
 
+| Name  | Type   | Default |
+| ----- | ------ | ------- |
+| value | number |         |
+
 ## Example
 
 <Codesandbox name="progress" />
+
+## References
+
+[https://codepen.io/restlessdesign/pen/AGGBOB](https://codepen.io/restlessdesign/pen/AGGBOB)

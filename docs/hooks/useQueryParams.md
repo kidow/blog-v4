@@ -7,20 +7,32 @@ npm install query-string
 ```typescript title="Next.js"
 import queryString from 'query-string'
 
-function useQuery<T>(): {
-  query: queryString.ParsedQuery<string>
-  updateQuery: (payload: Partial<T>, url?: string) => void
-} {
+export function useQueryParams<T>(): [
+  queryString.ParsedQuery<string>,
+  (payload: Partial<T>, url?: string) => void,
+  (queryList: string[]) => void
+] {
   const { replace, pathname, asPath } = useRouter()
   const { query } = queryString.parseUrl(asPath)
-
-  const updateQuery = (payload: Partial<T>, url?: string) => {
+  const setQuery = (payload: Partial<T>, url?: string) => {
     const as = queryString.stringify({ ...query, ...payload })
     replace(url || `${pathname}?${as}`, `${window.location.pathname}?${as}`, {
       scroll: false
     })
   }
-  return { query, updateQuery }
+  const resetQuery = (queryList: string[]) => {
+    let newQuery = query
+    queryList.forEach((item) => {
+      if (newQuery[item]) delete newQuery[item]
+    })
+    const as = queryString.stringify(newQuery)
+    replace(
+      !!as ? `${pathname}?${as}` : pathname,
+      !!as ? `${window.location.pathname}?${as}` : window.location.pathname,
+      { scroll: false }
+    )
+  }
+  return [query, setQuery, resetQuery]
 }
 ```
 
@@ -28,18 +40,15 @@ function useQuery<T>(): {
 import { useLocation, useHistory } from 'react-router-dom'
 import queryString from 'query-string'
 
-function useQuery<T>(): {
-  query: Partial<T>
-  updateQuery: (payload: Partial<T>) => void
-} {
+function useQuery<T>(): [Partial<T>, (payload: Partial<T>) => void] {
   const location = useLocation()
   const { replace } = useHistory()
   const query = queryString.parse(location.search) as unknown as Partial<T>
-  const updateQuery = (payload: Partial<T>) => {
+  const setQuery = (payload: Partial<T>) => {
     const url = queryString.stringify({ ...query, ...payload })
     replace(`${location.pathname}?${url}`)
   }
-  return { query, updateQuery }
+  return [query, setQuery]
 }
 ```
 
@@ -49,12 +58,12 @@ function useQuery<T>(): {
 import { useQuery } from 'hooks'
 
 const Page = () => {
-  const { query, updateQuery } = useQuery<{ id: string }>()
+  const { query, setQuery } = useQuery<{ id: string }>()
 
   console.log(query.id)
   return (
     <div>
-      <button onClick={() => updateQuery({ id: 1 })}>change query</button>
+      <button onClick={() => setQuery({ id: 1 })}>change query</button>
     </div>
   )
 }

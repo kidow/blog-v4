@@ -2,6 +2,11 @@ import { Required, Table, Codesandbox } from '@site/src/components'
 
 ## Prerequisite
 
+```bash npm2yarn
+npm install react-table
+npm install -D @types/react-table
+```
+
 ```css title="root file style.css"
 @layer base;
 @layer components;
@@ -116,30 +121,6 @@ export default Table
 | selection             | boolean          | false      |
 | maxHeight             | string           | `max-h-96` |
 
-<Table
-  list={[
-    {
-      country: 'USA',
-      capital: 'Washington D.C.',
-      population: '309 million',
-      language: 'English'
-    },
-    {
-      country: 'Sweden',
-      capital: 'Stockholm',
-      population: '9 million',
-      language: 'Swedish'
-    }
-  ]}
-  columns={['Countries', 'Capitals', 'Population', 'Language']}
-  renderItem={(item, key) => (
-    <div key={key}>
-      <div>{item.country}</div>
-      <div>{item.capital}</div>
-      <div>{item.population}</div>
-      <div>{item.language}</div>
-    </div>
-  )}
-/>
+## Example
 
 <Codesandbox name="table" />

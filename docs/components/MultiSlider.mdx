@@ -3,7 +3,128 @@ import { Required, Codesandbox } from '@site/src/components'
 ## Code
 
 ```tsx title="components/MultiSlider/index.tsx"
+import { useCallback, useEffect, useRef } from 'react'
+import type { FC } from 'react'
+import classnames from 'classnames'
+import { priceFormat, useObject } from 'services'
 
+export interface Props {
+  min: number
+  max: number
+  onChange: ({ min, max }: { min: number; max: number }) => void
+  step?: number
+  minLabel?: string
+  maxLabel?: string
+  defaultMin?: number
+  defaultMax?: number
+}
+interface State {
+  minValue: number
+  maxValue: number
+}
+
+const MultiSlider: FC<Props> = ({
+  min,
+  max,
+  onChange,
+  step,
+  minLabel,
+  maxLabel,
+  defaultMax,
+  defaultMin
+}) => {
+  const [{ minValue, maxValue }, setState] = useObject<State>({
+    minValue: min,
+    maxValue: max
+  })
+  const minRef = useRef<HTMLInputElement | null>(null)
+  const maxRef = useRef<HTMLInputElement | null>(null)
+  const rangeRef = useRef<HTMLDivElement | null>(null)
+
+  const getPercent = useCallback(
+    (value) => Math.round(((value - min) / (max - min)) * 100),
+    [min, max]
+  )
+
+  useEffect(() => {
+    if (maxRef.current) {
+      const minPercent = getPercent(minValue)
+      const maxPercent = getPercent(Number(maxRef.current.value))
+
+      if (rangeRef.current) {
+        rangeRef.current.style.left = `${minPercent}%`
+        rangeRef.current.style.width = `${maxPercent - minPercent}%`
+      }
+    }
+  }, [minValue, getPercent])
+
+  useEffect(() => {
+    if (minRef.current) {
+      const minPercent = getPercent(Number(minRef.current.value))
+      const maxPercent = getPercent(maxValue)
+
+      if (rangeRef.current) {
+        rangeRef.current.style.width = `${maxPercent - minPercent}%`
+      }
+    }
+  }, [maxValue, getPercent])
+
+  useEffect(() => {
+    setState({ minValue: defaultMin, maxValue: defaultMax })
+  }, [defaultMin, defaultMax])
+
+  return (
+    <div className="flex items-center justify-center relative mb-10">
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={minValue}
+        ref={minRef}
+        onChange={(e) => {
+          const value = Math.min(Number(e.target.value), maxValue)
+          setState({ minValue: value })
+          onChange({ min: value, max: maxValue })
+          e.target.value = value.toString()
+        }}
+        className={classnames('input-multi-range-slider z-[3]', {
+          'z-[5]': minValue > max - 100
+        })}
+      />
+      <input
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={maxValue}
+        ref={maxRef}
+        onChange={(e) => {
+          const value = Math.max(Number(e.target.value), minValue)
+          setState({ maxValue: value })
+          onChange({ min: minValue, max: value })
+          e.target.value = value.toString()
+        }}
+        className="input-multi-range-slider z-[4]"
+      />
+
+      <div className="relative w-full">
+        <div className="absolute rounded h-px w-full bg-gray-200 z-[1]" />
+        <div ref={rangeRef} className="absolute rounded h-px bg-black z-[2]" />
+        <div className="absolute font-dm text-sm font-medium mt-5">
+          {priceFormat(minValue)}
+          {minLabel}
+        </div>
+        <div className="absolute font-dm text-sm font-medium mt-5 right-0">
+          {priceFormat(maxValue)}
+          {maxLabel}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default MultiSlider
 ```
 
 ## Props

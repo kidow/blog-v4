@@ -5,11 +5,17 @@ import type { RefObject } from 'react'
 
 export function useOnClickOutside<T extends HTMLElement>(
   ref: RefObject<T>,
-  handler: (event: MouseEvent | TouchEvent) => void
+  handler: (event: MouseEvent | TouchEvent) => void,
+  elementId?: string
 ): void {
   const listener = (event: MouseEvent | TouchEvent) => {
     const el = ref?.current
-    if (!el || el.contains(event.target as Node)) return
+    if (
+      !el ||
+      el.contains(event.target as Node) ||
+      elementId === (event.target as HTMLElement).id
+    )
+      return
     handler(event)
   }
   useEffect(() => {

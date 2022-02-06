@@ -1,14 +1,24 @@
 import { Required, Codesandbox } from '@site/src/components'
 
+## Prerequisite
+
+- [`useObject`](/docs/hooks/useObject) hooks
+- [`Portal`](/docs/components/Portal) component
+
+```bash npm2yarn
+npm install classnames
+```
+
 ## Code
 
 ```tsx title="components/Tooltip/index.tsx"
-import { useRef } from 'react'
-import type { FC, CSSProperties, ReactNode } from 'react'
-import { useObject } from 'services'
+import { Children, cloneElement, useRef, useEffect, useMemo } from 'react'
+import type { ReactElement, MouseEvent, ReactNode, FC } from 'react'
 import classnames from 'classnames'
+import { useObject } from 'services'
+import { Portal } from 'components'
 
-export interface Props {
+interface Props {
   content: ReactNode
   position: 'top' | 'right' | 'bottom' | 'left'
   border?: boolean
@@ -18,141 +28,196 @@ export interface Props {
   animation?: boolean
 }
 interface State {
-  style?: CSSProperties
+  isOpen: boolean
+  triggerTop: number
+  triggerLeft: number
+  triggerWidth: number
+  triggerHeight: number
+  tooltipWidth: number
+  tooltipHeight: number
 }
 
 const Tooltip: FC<Props> = ({
-  content,
   children,
-  border = false,
-  theme = 'light',
-  arrow = true,
+  content,
   position,
-  padding = true,
-  animation = true
+  border,
+  theme,
+  arrow,
+  padding,
+  animation,
+  ...props
 }) => {
-  const [{ style }, setState] = useObject<State>({
-    style: undefined
+  const [
+    {
+      isOpen,
+      triggerLeft,
+      triggerTop,
+      triggerHeight,
+      triggerWidth,
+      tooltipHeight,
+      tooltipWidth
+    },
+    setState,
+    onChange,
+    resetState
+  ] = useObject<State>({
+    isOpen: false,
+    triggerTop: 0,
+    triggerLeft: 0,
+    triggerHeight: 0,
+    triggerWidth: 0,
+    tooltipHeight: 0,
+    tooltipWidth: 0
   })
-  const targetRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
-  const onMouseOver = () => {
-    if (targetRef.current && tooltipRef.current) {
-      const targetRect = targetRef.current.getBoundingClientRect()
-      const tooltipRect = tooltipRef.current.getBoundingClientRect()
-      let newStyle: CSSProperties = {}
+  const child = Children.only(
+    typeof children === 'string' ? (
+      <div tabIndex={-1}>{children}</div>
+    ) : (
+      children
+    )
+  ) as ReactElement
+  const trigger = cloneElement(child, {
+    ...props,
+    className: 'inline-block',
+    onMouseEnter: (e: MouseEvent) => {
+      const element = e.target as HTMLElement
+      const { height, width, top, left } = element.getBoundingClientRect()
+      setState({
+        isOpen: true,
+        triggerLeft: left,
+        triggerTop: top,
+        triggerHeight: height,
+        triggerWidth: width
+      })
+    },
+    onMouseLeave: () => resetState()
+  })
 
-      switch (position) {
-        case 'top':
-          newStyle.top = -tooltipRect.height - targetRect.height / 2
-          newStyle.left = targetRect.width / 2 - tooltipRect.width / 2
-          break
-        case 'bottom':
-          newStyle.top = targetRect.height + targetRect.height / 2
-          newStyle.left = targetRect.width / 2 - tooltipRect.width / 2
-          break
-        case 'left':
-          newStyle.top = targetRect.height / 2 - tooltipRect.height / 2
-          newStyle.left = -tooltipRect.width - 10
-          break
-        case 'right':
-          newStyle.top = targetRect.height / 2 - tooltipRect.height / 2
-          newStyle.left = targetRect.width + 10
-          break
-      }
+  const left: number = useMemo(() => {
+    if (position === 'top' || position === 'bottom')
+      return triggerLeft + triggerWidth / 2 - tooltipWidth / 2
+    else if (position === 'left') return triggerLeft - tooltipWidth - 10
+    else if (position === 'right') return triggerLeft + triggerWidth + 10
+    return 0
+  }, [triggerLeft, triggerWidth, tooltipWidth])
 
-      setState({ style: newStyle })
+  const top: number = useMemo(() => {
+    if (position === 'top') return triggerTop - tooltipHeight - 10
+    else if (position === 'bottom') return triggerTop + tooltipHeight
+    else if (position === 'left' || position === 'right')
+      return triggerTop + triggerHeight / 2 - tooltipHeight / 2
+    return 0
+  }, [triggerTop, tooltipHeight])
+
+  const isPositioned: boolean = useMemo(() => {
+    return !!tooltipWidth && !!tooltipHeight
+  }, [left, top])
+  useEffect(() => {
+    if (isOpen && tooltipRef.current) {
+      const { height, width } = tooltipRef.current.getBoundingClientRect()
+      setState({
+        tooltipHeight: height,
+        tooltipWidth: width
+      })
     }
-  }
+  }, [isOpen, tooltipRef])
   return (
-    <span className="relative group" onMouseOver={onMouseOver}>
-      <div
-        style={style}
-        className={classnames(
-          'invisible group-hover:visible rounded inline-block absolute whitespace-nowrap',
-          {
-            'px-5 py-2': padding,
-            'after:content-[""] after:absolute after:border-8': arrow,
-            'border border-gray-200': border,
-            'before:content-[""] before:absolute before:border-[9px]':
-              arrow && border,
-            'transition-opacity opacity-0 group-hover:opacity-100 ease-in duration-150':
-              animation,
+    <>
+      {trigger}
+      {isOpen && (
+        <Portal>
+          <div
+            ref={tooltipRef}
+            className={classnames(
+              'fixed rounded z-[9999]',
+              isPositioned ? 'visible' : 'invisible',
+              {
+                'px-5 py-2': padding,
+                'after:content-[""] after:absolute after:border-8': arrow,
+                'border border-gray-200': border,
+                'before-content-[""] before:absolute before:border-[9px]':
+                  arrow && border,
 
-            'bg-gray-100': theme === 'light',
-            'bg-black text-white': theme === 'dark',
+                'bg-gray-100 text-gray-700': theme === 'light',
+                'bg-black text-white': theme === 'dark',
 
-            'after:border-t-gray-100':
-              arrow && theme === 'light' && position === 'top',
-            'after:border-b-gray-100':
-              arrow && theme === 'light' && position === 'bottom',
-            'after:border-l-gray-100':
-              arrow && theme === 'light' && position === 'left',
-            'after:border-r-gray-100':
-              arrow && theme === 'light' && position === 'right',
-            'after:border-t-black':
-              arrow && theme === 'dark' && position === 'top',
-            'after:border-b-black':
-              arrow && theme === 'dark' && position === 'bottom',
-            'after:border-l-black':
-              arrow && theme === 'dark' && position === 'left',
-            'after:border-r-black':
-              arrow && theme === 'dark' && position === 'right',
+                'after:border-t-gray-100':
+                  arrow && theme === 'light' && position === 'top',
+                'after:border-b-gray-100':
+                  arrow && theme === 'light' && position === 'bottom',
+                'after:border-l-gray-100':
+                  arrow && theme === 'light' && position === 'left',
+                'after:border-r-gray-100':
+                  arrow && theme === 'light' && position === 'right',
+                'after:border-t-black':
+                  arrow && theme === 'dark' && position === 'top',
+                'after:border-b-black':
+                  arrow && theme === 'dark' && position === 'bottom',
+                'after:border-l-black':
+                  arrow && theme === 'dark' && position === 'left',
+                'after:border-r-black':
+                  arrow && theme === 'dark' && position === 'right',
 
-            'after:bottom-full after:border-t-transparent':
-              arrow && position === 'bottom',
-            'after:top-full after:border-b-transparent':
-              arrow && position === 'top',
-            'after:-ml-2 after:left-1/2 after:border-x-transparent':
-              arrow && (position === 'top' || position === 'bottom'),
+                'after:bottom-full after:border-t-transparent':
+                  arrow && position === 'bottom',
+                'after:top-full after:border-b-transparent':
+                  arrow && position === 'top',
+                'after:-ml-2 after:left-1/2 after:border-x-transparent':
+                  arrow && (position === 'top' || position === 'bottom'),
 
-            'after:left-full after:border-r-transparent':
-              arrow && position === 'left',
-            'after:right-full after:border-l-transparent':
-              arrow && position === 'right',
-            'after:-mt-2 after:top-1/2 after:border-y-transparent':
-              arrow && (position === 'left' || position === 'right'),
+                'after:left-full after:border-r-transparent':
+                  arrow && position === 'left',
+                'after:right-full after:border-l-transparent':
+                  arrow && position === 'right',
+                'after:-mt-2 after:top-1/2 after:border-y-transparent':
+                  arrow && (position === 'left' || position === 'right'),
 
-            'before:bottom-full before:border-t-transparent':
-              arrow && border && position === 'bottom',
-            'before:top-full before:border-b-transparent':
-              arrow && border && position === 'top',
-            'before:left-full before:border-r-transparent':
-              arrow && border && position === 'left',
-            'before:right-full before:border-l-transparent':
-              arrow && border && position === 'right',
+                'before:bottom-full before:border-t-transparent':
+                  arrow && border && position === 'bottom',
+                'before:top-full before:border-b-transparent':
+                  arrow && border && position === 'top',
+                'before:left-full before:border-r-transparent':
+                  arrow && border && position === 'left',
+                'before:right-full before:border-l-transparent':
+                  arrow && border && position === 'right',
 
-            'before:border-x-transparent before:-ml-2 before:left-[calc(50%-1px)]':
-              arrow && border && (position === 'top' || position === 'bottom'),
-            'before:border-y-transparent before:-mt-2 before:top-[calc(50%-1px)]':
-              arrow && border && (position === 'left' || position === 'right'),
+                'before:border-x-transparent before:-ml-2 before:left-[calc(50%-1px)]':
+                  arrow &&
+                  border &&
+                  (position === 'top' || position === 'bottom'),
+                'before:border-y-transparent before:-mt-2 before:top-[calc(50%-1px)]':
+                  arrow &&
+                  border &&
+                  (position === 'left' || position === 'right'),
 
-            'before:border-b-gray-200':
-              arrow && border && theme === 'light' && position === 'bottom',
-            'before:border-b-black':
-              arrow && border && theme === 'dark' && position === 'bottom',
-            'before:border-t-gray-200':
-              arrow && border && theme === 'light' && position === 'top',
-            'before:border-t-black':
-              arrow && border && theme === 'dark' && position === 'top',
-            'before:border-l-gray-200':
-              arrow && border && theme === 'light' && position === 'left',
-            'before:border-l-black':
-              arrow && border && theme === 'dark' && position === 'left',
-            'before:border-r-gray-200':
-              arrow && border && theme === 'light' && position === 'right',
-            'before:border-r-black':
-              arrow && border && theme === 'dark' && position === 'right'
-          }
-        )}
-        ref={tooltipRef}
-      >
-        {content}
-      </div>
-      <div ref={targetRef} className="inline-block">
-        {children}
-      </div>
-    </span>
+                'before:border-b-gray-200':
+                  arrow && border && theme === 'light' && position === 'bottom',
+                'before:border-b-black':
+                  arrow && border && theme === 'dark' && position === 'bottom',
+                'before:border-t-gray-200':
+                  arrow && border && theme === 'light' && position === 'top',
+                'before:border-t-black':
+                  arrow && border && theme === 'dark' && position === 'top',
+                'before:border-l-gray-200':
+                  arrow && border && theme === 'light' && position === 'left',
+                'before:border-l-black':
+                  arrow && border && theme === 'dark' && position === 'left',
+                'before:border-r-gray-200':
+                  arrow && border && theme === 'light' && position === 'right',
+                'before:border-r-black':
+                  arrow && border && theme === 'dark' && position === 'right'
+              }
+            )}
+            style={{ left, top }}
+            role="tooltip"
+          >
+            {content}
+          </div>
+        </Portal>
+      )}
+    </>
   )
 }
 

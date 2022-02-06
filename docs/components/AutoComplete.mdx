@@ -1,9 +1,9 @@
-import { Required, Autocomplete } from '@site/src/components'
+import { Required, Codesandbox } from '@site/src/components'
 
 ## Prerequisite
 
 - [`Input`](/docs/components/Input) component
-- [`getRandomString`](/docs/utils/getRandomString)
+- [`getRandomString`](/docs/utils/getRandomString) util
 
 ```css title="root css"
 input::-webkit-calendar-picker-indicator {
@@ -49,18 +49,7 @@ export default Autocomplete
 
 ## Example
 
-<Autocomplete
-  name="value"
-  options={[
-    'Apple',
-    'Google',
-    'Meta',
-    'Amazon',
-    'Microsoft',
-    'Netflix',
-    'Tesla'
-  ]}
-/>
+<Codesandbox name="autocomplete" />
 
 ## References
 

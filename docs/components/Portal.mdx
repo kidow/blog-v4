@@ -3,21 +3,37 @@ import { Required } from '@site/src/components'
 ## Code
 
 ```tsx title="components/Portal/index.tsx"
-import type { FC } from 'react'
-import { useMemo } from 'react'
+import { useEffect } from 'react'
+import type { FC, AriaRole } from 'react'
 import { createPortal } from 'react-dom'
 
 export interface Props {
-  elementId: string
+  role?: AriaRole
+  position?: {
+    left: number
+    top: number
+  }
 }
-interface State {}
 
-const Portal: FC<Props> = ({ children, elementId }) => {
-  const rootElement = useMemo(
-    () => document.getElementById(elementId),
-    [elementId]
-  )
-  return createPortal(children, rootElement as Element)
+const Portal: FC<Props> = ({ children, role, position }) => {
+  const element = document.createElement('div')
+  if (position) {
+    document.body.style.position = 'relative'
+    element.style.position = 'absolute'
+    element.style.left = `${position.left}px`
+    element.style.top = `${position.top}px`
+    element.style.zIndex = '9999'
+  }
+  if (role) element.setAttribute('role', role)
+  document.body.appendChild(element)
+
+  useEffect(() => {
+    return () => {
+      document.body.removeChild(element)
+      if (position) document.body.removeAttribute('style')
+    }
+  }, [])
+  return createPortal(children, element)
 }
 
 export default Portal
@@ -25,9 +41,10 @@ export default Portal
 
 ## Props
 
-| Name                  | Type   | Default |
-| --------------------- | ------ | ------- |
-| elementId<Required /> | string |         |
+| Name     | Type   | Default |
+| -------- | ------ | ------- |
+| role     | string |         |
+| position | object |         |
 
 ## Usage
 
@@ -35,7 +52,7 @@ export default Portal
 const Page = () => {
   return (
     <div>
-      <Portal elementId="portal">
+      <Portal>
         <div>This area is portal!!</div>
       </Portal>
     </div>

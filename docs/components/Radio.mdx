@@ -3,10 +3,65 @@ import { Required, Codesandbox } from '@site/src/components'
 ## Code
 
 ```tsx title="components/Radio/index.tsx"
+import React from 'react'
+import type { FC, ReactNode } from 'react'
+import classnames from 'classnames'
 
+export interface Props {
+  options: Array<{
+    name: ReactNode
+    value: any
+    disabled?: boolean
+  }>
+  onChange: (value: any) => void
+  value?: any
+  mode?: 'horizontal' | 'vertical'
+}
+
+const Radio: FC<Props> = ({
+  options,
+  onChange,
+  value,
+  mode = 'horizontal'
+}) => {
+  return (
+    <div
+      className={classnames('flex gap-2', {
+        'flex-col': mode === 'vertical'
+      })}
+    >
+      {options.map((item, index) => (
+        <label
+          key={index}
+          className={classnames(
+            'flex items-center',
+            item.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+          )}
+        >
+          <input
+            type="radio"
+            checked={value === item.value}
+            onChange={() => onChange(item.value)}
+            disabled={item.disabled}
+          />
+          <div className="text-sm ml-1 inline-block">{item.name}</div>
+        </label>
+      ))}
+    </div>
+  )
+}
+
+export default Radio
 ```
 
 ## Props
+
+| Name                 | Type                    | Default |
+| -------------------- | ----------------------- | ------- |
+| options<Required />  | array                   |         |
+| onChange<Required /> | function                |         |
+| value                | any                     |         |
+| mode                 | `horizontal` `vertical` |         |
 
 ## Example
 
