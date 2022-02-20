@@ -2,7 +2,7 @@ import { Required, Codesandbox } from '@site/src/components'
 
 ## Prerequisite
 
-- [`useObject`](/docs/hooks/useObject) hooks
+- [`useObjectState`](/docs/hooks/useObjectState) hooks
 - [`Portal`](/docs/components/Portal) component
 
 ```bash npm2yarn
@@ -15,7 +15,7 @@ npm install classnames
 import { Children, cloneElement, useRef, useEffect, useMemo } from 'react'
 import type { ReactElement, MouseEvent, ReactNode, FC } from 'react'
 import classnames from 'classnames'
-import { useObject } from 'services'
+import { useObjectState } from 'services'
 import { Portal } from 'components'
 
 interface Props {
@@ -61,7 +61,7 @@ const Tooltip: FC<Props> = ({
     setState,
     onChange,
     resetState
-  ] = useObject<State>({
+  ] = useObjectState<State>({
     isOpen: false,
     triggerTop: 0,
     triggerLeft: 0,

@@ -6,6 +6,7 @@ import { Required, Codesandbox } from '@site/src/components'
 - [`getRandomString`](/docs/utils/getRandomString) util
 
 ```css title="root css"
+/* datalist 고유의 picker icon 삭제 */
 input::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
@@ -14,17 +15,18 @@ input::-webkit-calendar-picker-indicator {
 ## Code
 
 ```tsx title="components/Autocomplete/index.tsx"
+import { useMemo } from 'react'
 import type { FC, OptionHTMLAttributes, ComponentProps } from 'react'
 import { Input } from 'components'
 import { getRandomString } from 'services'
 
 interface Props extends ComponentProps<typeof Input> {
-  id?: string
   options: Array<OptionHTMLAttributes<HTMLOptionElement>['value']>
+  id?: string
 }
 
 const Autocomplete: FC<Props> = ({ options, ...props }) => {
-  const id = getRandomString()
+  const id = useMemo(() => getRandomString(), [])
   return (
     <>
       <Input {...props} list={props.id || id} />
@@ -44,8 +46,8 @@ export default Autocomplete
 
 | Name                | Type             | Default |
 | ------------------- | ---------------- | ------- |
-| id<Required />      | string           |         |
 | options<Required /> | array of strings |         |
+| id                  | string           |         |
 
 ## Example
 

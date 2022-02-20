@@ -2,66 +2,85 @@ import { Required, Codesandbox } from '@site/src/components'
 
 ## Prerequisite
 
-- [`useObject`](/docs/hooks/useObject)
-- [`useOnClickOutside`](/docs/hooks/useOnClickOutside)
+- [`Portal`](/docs/components/Portal) component
+- [`useObjectState`](/docs/hooks/useObjectState) hooks
+- [`useOnClickOutside`](/docs/hooks/useOnClickOutside) hooks
+- [`getRandomString`](/docs/utils/getRandomString) util
 
 ## Code
 
 ```tsx title="components/Dropdown/index.tsx"
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import type { FC } from 'react'
-import { useObject, useOnClickOutside } from 'services'
-import classnames from 'classnames'
+import { Portal } from 'components'
+import { useObjectState, useOnClickOutside, getRandomString } from 'services'
 
-export interface Props {
+interface Props {
   list: string[]
-  onClick: (value: string) => void
+  onClick: (index: number) => void
   label?: string
 }
 interface State {
   isOpen: boolean
 }
 
-const Dropdown: FC<Props> = ({ list, onClick, label = 'Dropdown' }) => {
-  const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
+const Dropdown: FC<Props> = ({ label = 'Dropdown', list, onClick }) => {
+  const [{ isOpen }, setState] = useObjectState<State>({
+    isOpen: false
+  })
   const ref = useRef<HTMLButtonElement>(null)
-  useOnClickOutside(ref, () => setState({ isOpen: false }))
+  const targetRef = useRef<HTMLUListElement>(null)
+  const elementId = useMemo(() => getRandomString(), [])
+
+  useOnClickOutside(targetRef, () => setState({ isOpen: false }), elementId)
   return (
-    <button
-      className={classnames('relative text-sm font-medium', {
-        'bg-gray-200 rounded-md': isOpen
-      })}
-      ref={ref}
-    >
-      <div
-        className="inline-flex items-center px-4 py-2 hover:bg-gray-200 rounded-md after:content-[''] after:h-1.5 after:w-1.5 after:bg-transparent after:border-b after:border-r after:ml-2 after:border-gray-800 after:block after:rotate-45"
+    <>
+      <button
         onClick={() => setState({ isOpen: !isOpen })}
-        aria-haspopup="true"
-        aria-expanded="true"
+        id={elementId}
+        ref={ref}
+        className="inline-flex items-center px-4 py-2 hover:bg-gray-50 rounded-md text-gray-700 text-sm after:content-[''] after:h-1.5 after:w-1.5 after:bg-transparent after:border-b after:border-r after:ml-2 after:border-gray-700 after:block after:rotate-45"
       >
         {label}
-      </div>
+      </button>
       {isOpen && (
-        <div
-          className="absolute top-10 bg-gray-200 z-10 rounded-md p-1 min-w-full text-left"
-          role="none"
+        <Portal
+          style={{
+            left: `${ref.current?.getBoundingClientRect().left || 0}px`,
+            top: `${
+              window.scrollY +
+              (ref.current?.getBoundingClientRect().top || 0) +
+              40
+            }px`,
+            position: 'absolute',
+            zIndex: '9999',
+            minWidth: `${ref.current?.getBoundingClientRect().width || 0}px`
+          }}
         >
-          {list.map((item, key) => (
-            <div
-              onClick={() => {
-                onClick(item)
-                setState({ isOpen: false })
-              }}
-              className="hover:bg-gray-300 p-2 rounded-md"
-              role="menuitem"
-              tabIndex={-1}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
+          <ul
+            className="bg-gray-50 z-10 text-gray-700 rounded-md p-1 shadow-xl"
+            role="menu"
+            tabIndex={0}
+            ref={targetRef}
+          >
+            {list.map((item, key) => (
+              <li
+                className="cursor-pointer p-2 hover:bg-gray-100 rounded-md"
+                role="menuitem"
+                tabIndex={-1}
+                key={key}
+                onClick={() => {
+                  onClick(key)
+                  setState({ isOpen: false })
+                }}
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+        </Portal>
       )}
-    </button>
+    </>
   )
 }
 

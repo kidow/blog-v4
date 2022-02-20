@@ -21,9 +21,9 @@ const Timeline: FC<Props> = ({ list }) => {
         <div
           key={key}
           className={classNames(
-            "pl-5 relative -top-2 flex gap-5 after:content-[''] after:absolute after:w-3 after:h-3 after:-left-[5px] after:bg-white after:border-2 after:top-2 after:rounded-full after:border-blue-600 after:z-10 pb-10 last:pb-0",
+            "pl-5 relative -top-2 flex gap-5 after:content-[''] after:absolute after:w-3 after:h-3 after:-left-[5px] after:bg-white after:border-2 after:top-1.5 after:rounded-full after:border-blue-600 after:z-10 pb-10 last:pb-0",
             {
-              "before:content-[''] before:absolute before:w-px before:bg-gray-300 before:top-2 before:-bottom-2 before:left-0":
+              "before:content-[''] before:absolute before:border-r before:border-gray-300 before:border-dashed before:top-2 before:-bottom-2 before:left-0":
                 key !== list.length - 1
             }
           )}
@@ -32,7 +32,13 @@ const Timeline: FC<Props> = ({ list }) => {
             <div className="whitespace-nowrap font-semibold">{item.tag}</div>
           )}
           <div>
-            <h2 className="font-semibold">{item.title}</h2>
+            <h2
+              className={classNames('font-medium', {
+                'mb-4': !!item.content
+              })}
+            >
+              {item.title}
+            </h2>
             {item.content}
           </div>
         </div>

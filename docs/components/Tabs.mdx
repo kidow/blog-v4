@@ -4,52 +4,38 @@ import { Required, Codesandbox } from '@site/src/components'
 
 ```tsx title="components/Tabs/index.tsx"
 import type { FC } from 'react'
-import { useMemo } from 'react'
 import classnames from 'classnames'
 
 interface Props {
   list: string[]
   value: number
   onChange: (tab: number) => void
+  size?: 'xs' | 'sm' | 'md'
 }
 
-const Tabs: FC<Props> = ({ list, value, onChange }) => {
-  const left: number = useMemo(() => {
-    const tabContainer = document.getElementById('tab-container')
-    const element = document.getElementById(`tab-${value}`)
-    if (!element || !tabContainer) return 0
-    return (
-      element.getBoundingClientRect().left -
-      tabContainer.getBoundingClientRect().left
-    )
-  }, [value])
-
-  const width: number = useMemo(() => {
-    const element = document.getElementById(`tab-${value}`)
-    return element?.getBoundingClientRect().width || 0
-  }, [value])
-
+const Tabs: FC<Props> = ({ list, value, onChange, size = 'md' }) => {
   return (
-    <div id="tab-container" className="border-b relative border-gray-200">
+    <div className="relative border-gray-200">
       <div className="flex gap-8">
         {list.map((item, key) => (
           <div
             key={key}
             className={classnames(
-              'py-6 cursor-pointer transition duration-100 font-medium',
-              value === key ? 'text-blue-600' : 'text-gray-600'
+              'cursor-pointer transition duration-150 ease-in-out font-medium',
+              value === key ? 'text-blue-600' : 'text-gray-600',
+              {
+                'border-b-2 border-blue-600': value === key,
+                'py-6': size === 'md',
+                'py-3 text-sm': size === 'sm',
+                'py-1 text-xs': size === 'xs'
+              }
             )}
-            id={`tab-${key}`}
             onClick={() => onChange(key)}
           >
             {item}
           </div>
         ))}
       </div>
-      <div
-        className="h-0.5 bg-blue-600 absolute bottom-0 transition-all duration-300"
-        style={{ left, width }}
-      />
     </div>
   )
 }
@@ -64,6 +50,7 @@ export default Tabs
 | list<Required />     | array of strings |         |
 | value<Required />    | number           |         |
 | onChange<Required /> | function         |         |
+| size                 | `xs` `sm` `md`   | `md`    |
 
 ## Example
 

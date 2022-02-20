@@ -1,7 +1,7 @@
 한 컴포넌트에서 쓰는 State들을 하나의 hooks로 관리할 수 있도록 만든 hooks입니다.
 
 ```typescript title="services/hooks/index.tsx"
-export function useObject<T>(
+export function useObjectState<T>(
   initialObject: T
 ): [
   T,
@@ -58,7 +58,7 @@ export function useObject<T>(
 ## Usage
 
 ```tsx
-import { useObject } from 'services'
+import { useObjectState } from 'services'
 
 interface State {
   isLoading: boolean
@@ -67,13 +67,12 @@ interface State {
 }
 
 const Page = () => {
-  const [{ isLoading, email, password }, setState, onChange] = useObject<State>(
-    {
+  const [{ isLoading, email, password }, setState, onChange] =
+    useObjectState<State>({
       isLoading: false,
       email: '',
       password: ''
-    }
-  )
+    })
 
   const onClick = () => {
     setState({ isLoading: true })

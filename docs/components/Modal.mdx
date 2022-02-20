@@ -7,44 +7,42 @@ import { Required, Codesandbox } from '@site/src/components'
 ## Code
 
 ```typescript title="types/index.d.ts"
-export type TMaxWidth =
-  | 'max-w-screen-2xl'
-  | 'max-w-screen-xl'
-  | 'max-w-screen-lg'
-  | 'max-w-screen-md'
-  | 'max-w-screen-sm'
-  | 'max-w-full'
-  | 'max-w-7xl'
-  | 'max-w-6xl'
-  | 'max-w-5xl'
-  | 'max-w-4xl'
-  | 'max-w-3xl'
-  | 'max-w-2xl'
-  | 'max-w-xl'
-  | 'max-w-lg'
-  | 'max-w-md'
-  | 'max-w-sm'
-  | 'max-w-xs'
-
 export interface IModal {
   isOpen: boolean
   onClose: () => void
   title: string
-  maxWidth?: TMaxWidth
+  maxWidth?:
+    | 'max-w-screen-2xl'
+    | 'max-w-screen-xl'
+    | 'max-w-screen-lg'
+    | 'max-w-screen-md'
+    | 'max-w-screen-sm'
+    | 'max-w-full'
+    | 'max-w-7xl'
+    | 'max-w-6xl'
+    | 'max-w-5xl'
+    | 'max-w-4xl'
+    | 'max-w-3xl'
+    | 'max-w-2xl'
+    | 'max-w-xl'
+    | 'max-w-lg'
+    | 'max-w-md'
+    | 'max-w-sm'
+    | 'max-w-xs'
   description?: ReactNode
   padding?: boolean
 }
 ```
 
 ```tsx title="components/Modal/index.tsx"
-import React, { FC, useEffect } from 'react'
-import { IModal } from 'types'
+import { useEffect } from 'react'
+import type { FC } from 'react'
+import type { IModal } from 'types'
 import { XIcon } from '@heroicons/react/solid'
 import classnames from 'classnames'
 import { Portal } from 'components'
 
 interface Props extends IModal {}
-interface State {}
 
 const Modal: FC<Props> = ({
   isOpen,
@@ -59,6 +57,7 @@ const Modal: FC<Props> = ({
   const onEscape = (e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose()
   }
+
   useEffect(() => {
     window.addEventListener('keydown', onEscape)
     return () => {
@@ -66,11 +65,10 @@ const Modal: FC<Props> = ({
     }
   }, [])
   return (
-    <Portal>
+    <Portal role="dialog">
       <div
         className="fixed z-30 inset-0 overflow-y-auto"
         aria-labelledby="modal-title"
-        role="dialog"
         aria-modal="true"
       >
         <div className="flex items-end justify-center min-h-screen text-center md:block p-0">
@@ -78,7 +76,7 @@ const Modal: FC<Props> = ({
             className="fixed inset-0 bg-black opacity-30 transition-opacity"
             aria-hidden="true"
             onClick={onClose}
-          ></div>
+          />
           <span
             className="hidden md:inline-block align-middle h-screen"
             aria-hidden="true"
@@ -86,10 +84,13 @@ const Modal: FC<Props> = ({
             &#8203;
           </span>
           <div
-            className={`inline-block rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle w-full ${maxWidth}`}
+            className={classnames(
+              'inline-block rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle w-full',
+              maxWidth
+            )}
           >
             <header className="bg-white border-t-4 border-gray-800">
-              <div className="flex items-center py-3 px-4 border-b border-gray-200">
+              <div className="flex items-start py-3 px-4 border-b border-gray-200">
                 <div className="flex-1">
                   <h1 className="text-2xl font-semibold">{title}</h1>
                   {!!description && (
@@ -135,7 +136,7 @@ export default Modal
 ## Usage
 
 ```tsx
-import { useObject } from 'hooks'
+import { useObjectState } from 'hooks'
 import { Modal } from 'components'
 
 interface State {
@@ -143,10 +144,14 @@ interface State {
 }
 
 const Page = () => {
-  const [{ isOpen }, setState] = useObject<State>({ isOpen: false })
+  const [{ isOpen }, setState] = useObjectState<State>({ isOpen: false })
   return (
     <div>
-      <Modal isOpen={isOpen} onClose={() => setState({ isOpen: false })}>
+      <Modal
+        title="Title"
+        isOpen={isOpen}
+        onClose={() => setState({ isOpen: false })}
+      >
         <div>Modal!!</div>
       </Modal>
     </div>

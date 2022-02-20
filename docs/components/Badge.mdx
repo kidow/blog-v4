@@ -4,26 +4,16 @@ import { Required, Codesandbox } from '@site/src/components'
 
 ```tsx title="components/Badge/index.tsx"
 import type { FC } from 'react'
-import classnames from 'classnames'
 
-export interface Props {
-  count?: number
-  max?: number
-  dot?: boolean
-  animation?: boolean
-}
+export interface Props {}
 
-const Badge: FC<Props> = ({ children, count, max, dot, animation }) => {
+const Badge: FC<Props> = ({ children }) => {
   return (
     <span className="relative inline-block">
       {children}
       <span className="flex absolute h-3 w-3 top-0 right-0 -mt-1 -mr-1">
-        {animation && (
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-        )}
-        {dot && (
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
-        )}
+        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+        <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
       </span>
     </span>
   )
@@ -37,3 +27,7 @@ export default Badge
 ## Example
 
 <Codesandbox name="badge" />
+
+## References
+
+[https://tailwindcss.com/docs/animation#ping](https://tailwindcss.com/docs/animation#ping)

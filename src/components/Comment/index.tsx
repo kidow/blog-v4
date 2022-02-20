@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import type { FC } from 'react'
-import useThemeContext from '@theme/hooks/useThemeContext'
+import { useColorMode } from '@docusaurus/theme-common'
 
 export interface Props {}
 interface State {}
@@ -8,7 +8,7 @@ interface State {}
 const giscusSelector = 'iframe.giscus-frame'
 
 const Comment: FC<Props> = () => {
-  const { isDarkTheme } = useThemeContext()
+  const { isDarkTheme } = useColorMode()
   const theme = isDarkTheme ? 'dark_dimmed' : 'light'
   const ref = useRef<HTMLDivElement>(null)
 

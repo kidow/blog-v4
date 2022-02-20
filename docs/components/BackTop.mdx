@@ -1,8 +1,9 @@
-import classnames from 'classnames'
-import { ChevronUpIcon } from '@heroicons/react/outline'
-import useThemeContext from '@theme/hooks/useThemeContext'
+import { Codesandbox } from '@site/src/components'
 
 ## Prerequisite
+
+- [`useObjectState`](/docs/hooks/useObjectState) hooks
+- [`throttle`](/docs/utils/throttle) util
 
 ```bash npm2yarn
 npm install classnames @heroicons/react
@@ -11,20 +12,41 @@ npm install classnames @heroicons/react
 ## Code
 
 ```tsx title="components/BackTop/index.tsx"
-import { FC } from 'react'
-import classnames from 'classnames'
+import { useEffect } from 'react'
+import type { FC } from 'react'
 import { ChevronUpIcon } from '@heroicons/react/outline'
+import { throttle, useObjectState } from 'services'
+import classnames from 'classnames'
 
 export interface Props {}
-interface State {}
+interface State {
+  isVisible: boolean
+}
 
 const BackTop: FC<Props> = () => {
+  const [{ isVisible }, setState] = useObjectState<State>({
+    isVisible: false
+  })
+
+  const onScroll = throttle(
+    (e: Event) => setState({ isVisible: window.scrollY > 400 }),
+    10
+  )
+
+  useEffect(() => {
+    window.addEventListener('scroll', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
   return (
     <button
       className={classnames(
-        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center bg-black rounded-full'
+        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center bg-gray-900 hover:bg-black rounded-full duration-150',
+        isVisible ? 'scale-100' : 'scale-0'
       )}
       onClick={() => window.scrollTo(0, 0)}
+      tabIndex={0}
     >
       <ChevronUpIcon className="h-7 w-7 text-white" />
     </button>
@@ -34,23 +56,6 @@ const BackTop: FC<Props> = () => {
 export default BackTop
 ```
 
-export const BackTop = () => {
-  const { isDarkTheme } = useThemeContext()
-  return (
-    <button
-      class={classnames(
-        'fixed bottom-5 right-5 w-12 h-12 flex items-center justify-center rounded-full',
-        isDarkTheme ? 'bg-white' : 'bg-black'
-      )}
-      onClick={() => window.scrollTo(0, 0)}
-    >
-      <ChevronUpIcon
-        class={classnames('h-7 w-7', isDarkTheme ? 'text-black' : 'text-white')}
-      />
-    </button>
-  )
-}
+## Example
 
-> _화면 오른쪽 하단 참고!_
-
-<BackTop />
+<Codesandbox name="backtop" />

@@ -4,6 +4,10 @@ import { Codesandbox } from '@site/src/components'
 
 - [`Spinner`](/docs/components/Spinner) component
 
+```bash npm2yarn
+npm install classnames
+```
+
 ## Code
 
 ```tsx title="components/Button/index.tsx"
@@ -18,7 +22,7 @@ export interface Props
   > {
   loading?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg'
-  theme?: 'danger' | 'primary'
+  theme?: 'danger' | 'primary' | 'success'
   shape?: 'text' | 'contained' | 'outlined'
 }
 
@@ -29,44 +33,70 @@ const Button: FC<Props> = ({
   children,
   disabled,
   className,
-  shape = 'outlined',
+  shape = 'contained',
   ...props
 }) => {
   return (
     <button
       {...props}
       className={classnames(
-        'leading-6 font-medium transition ease-in-out duration-150',
-        !loading && !disabled
-          ? 'hover:brightness-105 active:brightness-90'
-          : 'cursor-not-allowed brightness-75',
+        'leading-6 font-medium transition ease-in-out duration-150 disabled:cursor-not-allowed border',
+        size === 'xs' ? 'text-xs py-px px-2 rounded gap-1.5' : 'rounded-md',
+        shape === 'outlined' ? 'group' : 'border-transparent',
         {
           'inline-flex items-center justify-center': loading,
-          'text-xs py-px px-2 rounded': size === 'xs',
-          'text-sm py-1 px-3': size === 'sm',
-          'text-base py-2 px-4': size === 'md',
-          'text-lg py-3 px-5': size === 'lg',
-          'bg-gray-900 text-white': shape === 'contained',
+          'hover:brightness-105 active:brightness-90': !loading && !disabled,
+          'text-sm py-1 px-3 gap-2': size === 'sm',
+          'text-base py-2 px-4 gap-3': size === 'md',
+          'text-lg py-3 px-5 gap-3': size === 'lg',
+          'bg-gray-900 text-white': !theme && shape === 'contained',
           'bg-red-600 text-white': theme === 'danger' && shape === 'contained',
           'bg-blue-500 text-white':
             theme === 'primary' && shape === 'contained',
-          'bg-transparent hover:bg-gray-200': shape === 'text',
-          'text-red-600': theme === 'danger' && shape === 'text',
-          'text-blue-500': theme === 'primary' && shape === 'text',
-          border: shape === 'outlined',
-          'border-gray-900': !theme && shape === 'outlined',
-          'border-blue-500 text-blue-500':
+          'bg-emerald-500 text-white':
+            theme === 'success' && shape === 'contained',
+          'disabled:bg-gray-300 disabled:text-white':
+            shape === 'contained' && (loading || disabled),
+          'bg-transparent disabled:hover:bg-gray-200 disabled:hover:text-white':
+            shape === 'text',
+          'hover:bg-gray-200': !theme && shape === 'text',
+          'text-red-600 hover:bg-red-100':
+            theme === 'danger' && shape === 'text',
+          'text-blue-500 hover:bg-blue-100':
+            theme === 'primary' && shape === 'text',
+          'text-emerald-500 hover:bg-emerald-100':
+            theme === 'success' && shape === 'text',
+          'hover:text-white': shape === 'outlined',
+          'border-gray-500 text-gray-500 hover:bg-gray-900':
+            !theme && shape === 'outlined',
+          'border-blue-500 text-blue-500 hover:bg-blue-500':
             theme === 'primary' && shape === 'outlined',
-          'border-red-500 text-red-500':
+          'border-red-500 text-red-500 hover:bg-red-500':
             theme === 'danger' && shape === 'outlined',
-
-          'rounded-md': size !== 'xs'
+          'border-emerald-500 text-emerald-500 hover:bg-emerald-500':
+            theme === 'success' && shape === 'outlined'
         },
         className
       )}
       disabled={loading || disabled}
     >
-      {loading && <Spinner />}
+      {loading && (
+        <Spinner
+          className={classnames({
+            'h-3 w-3': size === 'xs',
+            'h-4 w-4': size === 'sm',
+            'h-5 w-5': size === 'md',
+            'h-6 w-6': size === 'lg',
+            'text-white': shape === 'contained',
+            'group-hover:text-white': shape === 'outlined',
+            'text-gray-900':
+              (shape !== 'contained' && !theme) || shape === 'text',
+            'text-blue-500': shape !== 'contained' && theme === 'primary',
+            'text-red-500': shape !== 'contained' && theme === 'danger',
+            'text-emerald-500': shape !== 'contained' && theme === 'success'
+          })}
+        />
+      )}
       {children}
     </button>
   )
@@ -77,11 +107,12 @@ export default Button
 
 ## Props
 
-| Name      | Type                                                            | Default |
-| --------- | --------------------------------------------------------------- | ------- |
-| size      | `xs` `sm` `md` `lg` `xl`                                        | `md`    |
-| isLoading | boolean                                                         | false   |
-| theme     | `dark` `light` `primary` `secondary` `success` `danger` `ghost` | `dark`  |
+| Name      | Type                          | Default     |
+| --------- | ----------------------------- | ----------- |
+| size      | `xs` `sm` `md` `lg`           | `md`        |
+| isLoading | boolean                       | false       |
+| theme     | `primary` `success` `danger`  | `undefined` |
+| shape     | `text` `contained` `outlined` | `contained` |
 
 ## Example
 

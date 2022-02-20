@@ -26,7 +26,6 @@ module.exports = {
 
 ```tsx title="components/Progress/index.tsx"
 import type { FC } from 'react'
-import classnames from 'classnames'
 
 interface Props {
   value: number
@@ -36,9 +35,8 @@ const Progress: FC<Props> = ({ value }) => {
   return (
     <div className="border rounded-full h-3">
       <div
-        className="h-full bg-sky-400 rounded-full animate-slide"
+        className="h-full bg-sky-400 rounded-full animate-slide bg-[length:30px_30px]"
         style={{
-          backgroundSize: '30px 30px',
           backgroundImage:
             'linear-gradient(135deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)',
           width: `${value > 100 ? 100 : value}%`

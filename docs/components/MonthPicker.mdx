@@ -1,12 +1,157 @@
 import { Required, Codesandbox } from '@site/src/components'
 
+## Prerequisite
+
+- [`Portal`](/docs/components/Portal) component
+- [`getRandomString`](/docs/utils/getRandomString) util
+- [`useObjectState`](/docs/hooks/useObjectState) hooks
+- [`useOnClickOutside`](/docs/hooks/useOnClickOutside) hooks
+- [`twoDigitsNumber`](/docs/utils/twoDigitsNumber) util
+
+```bash npm2yarn
+npm install classnames dayjs @heroicons/react
+```
+
 ## Code
 
 ```tsx title="components/MonthPicker/index.tsx"
+import { useMemo, useRef } from 'react'
+import type { FC } from 'react'
+import classnames from 'classnames'
+import dayjs from 'dayjs'
+import {
+  CalendarIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon
+} from '@heroicons/react/outline'
+import { XCircleIcon } from '@heroicons/react/solid'
+import {
+  getRandomString,
+  useObjectState,
+  useOnClickOutside,
+  twoDigitsNumber
+} from 'services'
+import { Portal } from 'components'
 
+export interface Props {
+  value: string
+  onChange: (value: string) => void
+}
+interface State {
+  isOpen: boolean
+  date: dayjs.Dayjs
+}
+
+const MonthPicker: FC<Props> = ({ value, onChange }) => {
+  const [{ isOpen, date }, setState] = useObjectState<State>({
+    isOpen: false,
+    date: dayjs(value || dayjs().format('YYYY-MM'))
+  })
+  const ref = useRef<HTMLDivElement>(null)
+  const targetRef = useRef<HTMLDivElement>(null)
+  const elementId = useMemo(() => getRandomString(), [])
+  useOnClickOutside(targetRef, () => setState({ isOpen: false }), elementId)
+  return (
+    <>
+      <div
+        className="inline-flex items-center rounded border border-gray-300 group hover:border-gray-600 relative"
+        ref={ref}
+        id={elementId}
+        onClick={() => setState({ isOpen: true })}
+      >
+        <input
+          readOnly
+          className="border-none outline-none text-sm py-2 px-3 w-36 rounded"
+          placeholder="YYYY.MM"
+          value={value ? dayjs(value).format('YYYY.MM') : ''}
+        />
+        {!!value && (
+          <XCircleIcon
+            onClick={(e) => {
+              e.stopPropagation()
+              onChange('')
+              setState({ isOpen: false })
+            }}
+            className="h-5 w-5 mr-2 text-gray-300 absolute right-10 cursor-pointer invisible group-hover:visible"
+          />
+        )}
+        <button className="p-2 border-l border-gray-300 bg-white group-hover:border-gray-600">
+          <CalendarIcon className="h-5 w-5 text-gray-300 group-hover:text-gray-600" />
+        </button>
+      </div>
+      {isOpen && (
+        <Portal
+          role="presentation"
+          style={{
+            left: `${ref.current?.getBoundingClientRect().left || 0}px`,
+            top: `${
+              window.scrollY +
+              (ref.current?.getBoundingClientRect().top || 0) +
+              40
+            }px`,
+            position: 'absolute',
+            zIndex: '9999'
+          }}
+        >
+          <div
+            ref={targetRef}
+            className="select-none rounded drop-shadow-xl bg-white w-64"
+          >
+            <div className="flex items-center px-2 justify-between border-b border-gray-300">
+              <button
+                className="py-3"
+                onClick={() => setState({ date: dayjs(date).add(-1, 'year') })}
+              >
+                <ChevronLeftIcon className="h-4 w-4 text-gray-400 hover:text-gray-800" />
+              </button>
+              <span className="font-semibold">
+                {dayjs(date).format('YYYY')}
+              </span>
+              <button
+                className="py-3"
+                onClick={() => setState({ date: dayjs(date).add(1, 'year') })}
+              >
+                <ChevronRightIcon className="h-4 w-4 text-gray-400 hover:text-gray-800" />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-4 px-2 py-4">
+              {Array.from({ length: 12 }).map((_, key) => (
+                <div
+                  key={key}
+                  className={classnames(
+                    'cursor-pointer rounded h-6 text-sm grid place-items-center',
+                    dayjs(value).format('YYYY-MM') ===
+                      dayjs(date).format(`YYYY-${twoDigitsNumber(key + 1)}`)
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-200'
+                  )}
+                  onClick={() => {
+                    onChange(
+                      dayjs(date).format(`YYYY-${twoDigitsNumber(key + 1)}`)
+                    )
+                    setState({ isOpen: false })
+                  }}
+                >
+                  {key + 1}월
+                </div>
+              ))}
+            </div>
+          </div>
+        </Portal>
+      )}
+    </>
+  )
+}
+
+export default MonthPicker
 ```
 
 ## Props
+
+| Name                 | Type     | Default |
+| -------------------- | -------- | ------- |
+| value<Required />    | string   |         |
+| onChange<Required /> | function |         |
 
 ## Example
 

@@ -2,9 +2,10 @@ import { Required, Table, Codesandbox } from '@site/src/components'
 
 ## Prerequisite
 
+- [`Spinner`](/docs/components/Spinner) component
+
 ```bash npm2yarn
-npm install react-table
-npm install -D @types/react-table
+npm install classnames
 ```
 
 ```css title="root file style.css"
@@ -12,12 +13,20 @@ npm install -D @types/react-table
 @layer components;
 @layer utilities;
 
-@layer components {
-  .react-table-row-group > div {
-    @apply table-row text-sm text-gray-500 overflow-x-auto hover:bg-blue-50 even:bg-gray-50;
+@layer base {
+  th,
+  td {
+    @apply px-6 py-3 border-b border-r;
   }
-  .react-table-row-group > div > div {
-    @apply table-cell px-6 py-4 align-top;
+  tr {
+    @apply border-b last:border-b-0;
+  }
+  th:first-child input[type='checkbox'],
+  td:first-child input[type='checkbox'] {
+    @apply w-5 h-5 cursor-pointer align-middle disabled:cursor-not-allowed;
+  }
+  tbody tr {
+    @apply hover:bg-sky-50 even:bg-gray-50;
   }
 }
 ```
@@ -25,101 +34,128 @@ npm install -D @types/react-table
 ## Code
 
 ```tsx title="containers/Table/index.tsx"
-import React from 'react'
 import type { ReactNode } from 'react'
+import { Spinner } from 'components'
 import classnames from 'classnames'
+
+import TableCheckbox from './Checkbox'
 
 export interface Props<T> {
   list: T[]
-  columns: string[]
+  columns: ReactNode
   renderItem: (item: T, index: number) => ReactNode
-  isAllSelected?: boolean
-  onSelectAll?: (checked: boolean) => void
   loading?: boolean
-  header?: ReactNode
-  selection?: boolean
-  maxHeight?: string
 }
 
-function Table<T>({
-  list,
-  columns,
-  renderItem,
-  isAllSelected,
-  onSelectAll,
-  loading,
-  header,
-  selection = true,
-  maxHeight = 'max-h-96'
-}: Props<T>) {
+function Table<T>({ columns, list, renderItem, loading }: Props<T>) {
   return (
-    <>
-      {!!header && (
-        <div className="py-2 px-3 bg-gray-200 text-gray-500">{header}</div>
+    <div
+      className={classnames(
+        'relative border-t border-l border-gray-200',
+        loading ? 'overflow-clip' : 'overflow-auto'
       )}
-      <div
-        className={classnames(
-          'overflow-auto border border-gray-200',
-          maxHeight
-        )}
-      >
-        <div className="table mb-0 min-w-full whitespace-nowrap h-px divide-y divide-gray-200 rounded">
-          <div className="table-header-group bg-gray-100 sticky top-0 z-10 w-full">
-            <div className="table-row">
-              {selection && (
-                <div className="table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider">
-                  <input
-                    type="checkbox"
-                    checked={isAllSelected}
-                    onChange={
-                      !!onSelectAll
-                        ? (e) => onSelectAll(e.target.checked)
-                        : undefined
-                    }
-                    className="cursor-pointer"
-                  />
-                </div>
-              )}
-              {columns.map((column, key) => (
-                <div
-                  key={key}
-                  className="table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 tracking-wider"
-                >
-                  {column}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div
-            className={classnames(
-              'table-row-group relative divide-y divide-gray-200 bg-white react-table-row-group',
-              selection ? 'cursor-pointer' : 'cursor-default'
-            )}
-          >
-            {list.map((item: T, index) => renderItem(item, index))}
-          </div>
-        </div>
-      </div>
-    </>
+    >
+      {loading && (
+        <>
+          <div className="absolute inset-0 z-[11] opacity-60 bg-white" />
+          <Spinner className="w-6 h-6 text-primary absolute left-1/2 top-1/2 z-[12]" />
+        </>
+      )}
+      <table className="w-full text-xs text-gray-500 whitespace-nowrap text-center">
+        <thead className="bg-gray-100 sticky top-0 tracking-wider">
+          {columns}
+        </thead>
+        <tbody>
+          {!!list.length ? (
+            list.map((item: T, key) => renderItem(item, key))
+          ) : (
+            <tr>
+              <td colSpan={99}>No data.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
   )
 }
+
+Table.Checkbox = TableCheckbox
 
 export default Table
 ```
 
 ## Props
 
-| Name                  | Type             | Default    |
-| --------------------- | ---------------- | ---------- |
-| list<Required/>       | any array        |            |
-| columns<Required/>    | array of strings |            |
-| renderItem<Required/> | function         |            |
-| isAllSelected         | boolean          | false      |
-| onSelectAll           | function         |            |
-| loading               | boolean          | false      |
-| header                | node             |            |
-| selection             | boolean          | false      |
-| maxHeight             | string           | `max-h-96` |
+### Table
+
+| Name                  | Type      | Default |
+| --------------------- | --------- | ------- |
+| list<Required/>       | any array |         |
+| columns<Required/>    | node      |         |
+| renderItem<Required/> | function  |         |
+| loading               | boolean   | false   |
+
+### Table.Checkbox
+
+| Name                | Type     | Default |
+| ------------------- | -------- | ------- |
+| checked<Required/>  | boolean  | false   |
+| onChange<Required/> | function |         |
+| indeterminate       | boolean  | false   |
+| disabled            | boolean  | false   |
+
+## Usage
+
+```tsx
+import { Table } from 'components'
+
+interface State {}
+
+const TablePage = () => {
+  return (
+    <div>
+      <Table
+        loading
+        columns={
+          <>
+            <tr>
+              <th rowSpan={2}>
+                <input type="checkbox" />
+              </th>
+              <th colSpan={2}>Name</th>
+              <th rowSpan={2}>Gender</th>
+              <th colSpan={3}>Address</th>
+            </tr>
+            <tr>
+              <th>First</th>
+              <th>Last</th>
+              <th>zipCode</th>
+              <th>address</th>
+              <th>detail</th>
+            </tr>
+          </>
+        }
+        list={[{}, {}, {}]}
+        renderItem={(item, key) => (
+          <tr key={key}>
+            <td>
+              <input type="checkbox" />
+            </td>
+            <td>a</td>
+            <td>a</td>
+            <td>a</td>
+            <td>a</td>
+            <td>a</td>
+            <td>a</td>
+          </tr>
+        )}
+      />
+    </div>
+  )
+}
+
+export default TablePage
+```
 
 ## Example
 

@@ -12,10 +12,10 @@ export interface Props {
 
 const ButtonGroup: FC<Props> = ({ list, onClick }) => {
   return (
-    <div className="flex rounded border divide-x">
+    <div className="inline-flex rounded border divide-x bg-white">
       {list.map((name, key) => (
         <button
-          className="py-2 px-3 text-gray-400 text-sm hover:text-primary hover:bg-sky-50"
+          className="py-2 px-3 text-gray-400 text-sm hover:text-blue-500 hover:bg-sky-50"
           key={key}
           onClick={() => onClick(key)}
         >

@@ -36,10 +36,10 @@
     ],
     "description": "page generator"
   },
-  "useObject hooks": {
+  "useObjectState hooks": {
     "prefix": "state",
-    "body": ["const [{}, setState] = useObject<State>({ $1 })"],
-    "description": "useObject hooks"
+    "body": ["const [{}, setState] = useObjectState<State>({ $1 })"],
+    "description": "useObjectState hooks"
   },
   "export default": {
     "prefix": "exp",

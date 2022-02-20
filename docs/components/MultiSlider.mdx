@@ -6,7 +6,7 @@ import { Required, Codesandbox } from '@site/src/components'
 import { useCallback, useEffect, useRef } from 'react'
 import type { FC } from 'react'
 import classnames from 'classnames'
-import { priceFormat, useObject } from 'services'
+import { priceFormat, useObjectState } from 'services'
 
 export interface Props {
   min: number
@@ -33,7 +33,7 @@ const MultiSlider: FC<Props> = ({
   defaultMax,
   defaultMin
 }) => {
-  const [{ minValue, maxValue }, setState] = useObject<State>({
+  const [{ minValue, maxValue }, setState] = useObjectState<State>({
     minValue: min,
     maxValue: max
   })
