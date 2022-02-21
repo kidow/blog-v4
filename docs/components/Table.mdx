@@ -52,16 +52,21 @@ function Table<T>({ columns, list, renderItem, loading }: Props<T>) {
     <div
       className={classnames(
         'relative border-t border-l border-gray-200',
-        loading ? 'overflow-clip' : 'overflow-auto'
+        loading ? 'overflow-hidden' : 'overflow-auto'
       )}
     >
       {loading && (
-        <>
-          <div className="absolute inset-0 z-[11] opacity-60 bg-white" />
-          <Spinner className="w-6 h-6 text-primary absolute left-1/2 top-1/2 z-[12]" />
-        </>
+        <Spinner className="w-6 h-6 text-primary absolute left-1/2 top-1/2 z-[12]" />
       )}
-      <table className="w-full text-xs text-gray-500 whitespace-nowrap text-center">
+      <table
+        className={classnames(
+          'w-full text-xs text-gray-500 whitespace-nowrap text-center',
+          {
+            'opacity-60 cursor-not-allowed select-none pointer-events-none':
+              loading
+          }
+        )}
+      >
         <thead className="bg-gray-100 sticky top-0 tracking-wider">
           {columns}
         </thead>
