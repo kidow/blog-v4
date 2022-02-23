@@ -10,3 +10,15 @@ declare namespace NodeJS {
   }
 }
 ```
+
+### window, document 객체에 변수 타입을 지정할 때
+
+```typescript title="types/global.d.ts"
+export {}
+declare global {
+  // window 객체 변수 타입 추가
+  interface Window {}
+  // document 객체 변수 타입 추가
+  interface Document {}
+}
+```
